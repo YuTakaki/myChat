@@ -1,0 +1,47 @@
+@import 'variables';
+
+@mixin DashboardView1 {
+    .userView1{
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        transition: 0.5s;
+        .search{
+            width: 100%;
+            border-bottom: 1px solid gray;
+            padding: 20px;
+            display: flex;
+            i{
+                font-size: 2em;
+                cursor: pointer;
+            }
+            form{
+                margin: auto;
+                display: flex;
+                
+                width: 70%;
+                justify-content: space-between;
+                
+                label{
+                    width: 100%;
+                    display: flex;
+                    border: 1px solid grey;
+                    padding: 10px;
+                    border-radius: 30px;
+                    
+                }
+                input{
+                    width: 90%;
+                    border: none;
+                    outline: 0;
+                }
+
+            }
+        }
+    }
+    .viewHide{
+        width: 0;
+
+    }
+    
+}

@@ -1,0 +1,14 @@
+@import 'variables';
+@import 'dashboardMixinNav';
+@import 'dashboardView2Mixin';
+@import 'dashboardView1Mixin';
+
+.dashboard{
+    display: flex;
+    height: 100%;
+    width: 100%;
+    @include DashboardNav;
+    @include DashboardView1;
+    @include DashboardView2;
+
+}
