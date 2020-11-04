@@ -7,6 +7,7 @@ function App() {
     <div className="App">
       <Router>
         <Route exact path='/' component={Dashboard} />
+        
 
       </Router>
     

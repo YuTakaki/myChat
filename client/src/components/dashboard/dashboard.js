@@ -2,29 +2,24 @@ import React from 'react';
 import '../../styles/dashboard.scss';
 import Header from './header';
 import Search from './search';
-
+import MessageList from './messageList';
+import OpenMessage from './openMessage';
 
 const Dashboard = () => {
 
-    
     return ( 
         <div className='dashboard'>
             <Header />
             <div className='userView1'>
                 <Search />
+                <MessageList />
                 
-                <div className='messageContainer'>
-                    <div className='messageContent'>
-                        <img />
-                        <div className='message'>
-                            <h4>Yu Takaki</h4>
-                            <p>bakit ba ikaw na ang</p>
-                        </div>
-                    </div>
-
-                </div>
+                
+                
             </div>
             <div className='userView2'>
+                <OpenMessage />
+                
 
             </div>
         </div>

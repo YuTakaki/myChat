@@ -1,5 +1,20 @@
 @import 'variables';
 
 @mixin DashboardView2 {
+    .userView2{
+        background-color: $tertiary;
+        width: 0;
+        transition: 0.5s;
+        overflow: hidden;
+        .chatHeader{
+            width: 100%;
+            border-bottom: 1px solid $primary;
+            height: 10%;
+            background-color: transparent;
+        }
+    }
+    .userView2Open{
+        width: 100%;
+    }
     
 }
