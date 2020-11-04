@@ -28,7 +28,7 @@ const MessageList = () => {
                     userView1bakit ba ikaw na ang
                     bakit ba ikaw na ang</p>
                 </div>
-                <div>
+                <div className='right'>
                     <p>june 18</p>
                     <i className='fa fa-ellipsis-h' onClick={showMessageOption}></i>
                     <div className='message-options'>
