@@ -1,14 +1,18 @@
 import React from 'react';
-import {HashRouter as Router, Route} from 'react-router-dom'
+import {HashRouter as Router, Route, Switch} from 'react-router-dom'
 import Dashboard from './components/dashboard/dashboard';
+import MessageList from './components/dashboard/messageList';
+import OpenMessage from './components/dashboard/openMessage';
 
 function App() {
   return (
     <div className="App">
       <Router>
-        <Route exact path='/' component={Dashboard} />
-        
+        {/* <Switch> */}
+          <Route path='/' component={Dashboard} />
 
+        {/* </Switch> */}
+        
       </Router>
     
     </div>

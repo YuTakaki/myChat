@@ -105,7 +105,7 @@
                     }
                 }
                 .message{
-                    width: 50%;
+                    width:50%;
                     h4, p{
                         
                         overflow: hidden;
@@ -132,6 +132,7 @@
             }
             .right{
                 margin-left: auto;
+                // min-width: 60px;
             }
         }
     }
