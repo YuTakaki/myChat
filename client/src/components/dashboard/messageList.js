@@ -1,5 +1,6 @@
 import React from 'react';
 import user from '../../assets/yu.jpg';
+import {Link} from 'react-router-dom';
 
 const MessageList = () => {
     const showMessageOption = (e) => {
@@ -14,7 +15,8 @@ const MessageList = () => {
     }
     return ( 
         <div className='messageContainer'>
-            <div className='messageContent' onClick={openUserView2}>
+
+            <Link to='/messages/asd'><div className='messageContent' onClick={openUserView2}>
                 <img src={user}/>
                 <div className='message'>
                     <h4>Yu Takaki</h4>
@@ -35,7 +37,7 @@ const MessageList = () => {
                         <button>Delete</button>
                     </div>
                 </div>
-            </div>
+            </div></Link>
         </div>
 
      );

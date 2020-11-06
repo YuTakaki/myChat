@@ -1,5 +1,6 @@
 import React from 'react';
-import user from '../../assets/yu.jpg'
+import user from '../../assets/yu.jpg';
+import {Link} from 'react-router-dom';
 
 const Header = () => {
     const hideMenu = () => {
@@ -12,18 +13,21 @@ const Header = () => {
             <i className='fa fa-angle-left' onClick={hideMenu}></i>
             <nav className='userNav'>
                 <ul>
-                    <li>
+                    <Link to='/messages'><li>
                         <i className='fa fa-envelope'></i>
                         <p>Messages</p>
-                    </li>
-                    <li>
+                    </li></Link>
+                    <Link to='/contacts'><li>
                         <i className='fas fa-user-friends'></i>
-                        <p>Friends</p>
-                    </li>
-                    <li>
+                        <p>Contacts</p>
+                    </li></Link>
+
+                    <Link><li>
                         <i className='fa fa-gear'></i>
                         <p>Settings</p>
-                    </li>
+                    </li></Link>
+                    
+                    
                 </ul>
                 <input type='checkbox' />
             </nav>

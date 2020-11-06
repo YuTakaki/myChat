@@ -11,6 +11,10 @@
         overflow: hidden;
         width: 0;
         transition: 0.5s;
+        a{
+            text-decoration: none;
+            color: $tertiary;
+        }
         .fa-angle-left{
             position: absolute;
             top: 10px;

@@ -7,6 +7,20 @@
     display: flex;
     height: 100%;
     width: 100%;
+    a{
+        text-decoration: none;
+    }
+    .activeIndicator{
+        height: 15px;
+        width: 15px;
+        border-radius: 15px;
+        margin-top: auto;
+        margin-left: -10px;
+    }
+    .activeIndicatorTrue{
+        background-color: $quarternary;
+
+    }
     @include DashboardNav;
     @include DashboardView1;
     @include DashboardView2;

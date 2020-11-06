@@ -1,5 +1,6 @@
 import React, {useRef, useEffect} from 'react';
 import user from '../../assets/yu.jpg';
+import {Link} from 'react-router-dom';
 
 const OpenMessage = () => {
     const closeUserView2 = () => {
@@ -16,7 +17,7 @@ const OpenMessage = () => {
     return ( 
         <>
             <div className='chatHeader'>
-                <i className='fa fa-angle-left' onClick={closeUserView2}></i>
+                <Link to='/messages'><i className='fa fa-angle-left' onClick={closeUserView2}></i></Link>
                 <img src={user} />
                 <h4>Yu Takaki</h4>
 
