@@ -1,5 +1,6 @@
 import React from 'react';
 import user from '../../assets/yu.jpg';
+import {Link} from 'react-router-dom';
 
 const ContactList = () => {
 
@@ -17,6 +18,11 @@ const ContactList = () => {
             })
         e.target.classList.add('activeContactBtn');
     }
+
+    const openUserView2= (e) => {
+        document.querySelector('.userView1').classList.add('viewHide');
+        document.querySelector('.userView2').classList.add('userView2Open');
+    }
     return ( 
         <div className='contactListContainer'>
             <nav>
@@ -24,14 +30,32 @@ const ContactList = () => {
                 <button onClick={navContactList} className='allContacts'>All</button>
             </nav>
             <div className='activeContacts activeContactLists activeContactContainer'>
-                <div className='contactActive'>
-                    <img src={user}/>
-                    <div className='activeIndicator activeIndicatorTrue'></div>
-                    <p>Yu Takaki</p>
-                </div>
+                <Link to='/contacts/sa'>
+                    <div className='contactActive' onClick={openUserView2}>
+                        <img src={user}/>
+                        <div className='activeIndicator activeIndicatorTrue'></div>
+                        <p>Yu Takaki</p>
+                    </div>
+                </Link>
+                <Link to='/contacts/sa'>
+                    <div className='contactActive' onClick={openUserView2}>
+                        <img src={user}/>
+                        <div className='activeIndicator activeIndicatorTrue'></div>
+                        <p>Yu Takaki</p>
+                    </div>
+                </Link>
+                
 
             </div>
             <div className='allContacts allContactLists'>
+                <Link to='/contacts/sa'>
+                    <div className='contactActive' onClick={openUserView2}>
+                        <img src={user}/>
+                        <div className='activeIndicator activeIndicatorTrue'></div>
+                        <p>Yu Takaki</p>
+                    </div>
+                </Link>
+
 
             </div>
 

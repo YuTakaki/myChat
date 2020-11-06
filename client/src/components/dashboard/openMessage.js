@@ -19,6 +19,7 @@ const OpenMessage = () => {
             <div className='chatHeader'>
                 <Link to='/messages'><i className='fa fa-angle-left' onClick={closeUserView2}></i></Link>
                 <img src={user} />
+                <div className='activeIndicator activeIndicatorTrue'></div>
                 <h4>Yu Takaki</h4>
 
             </div>

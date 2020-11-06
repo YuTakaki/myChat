@@ -13,21 +13,19 @@ const Header = () => {
             <i className='fa fa-angle-left' onClick={hideMenu}></i>
             <nav className='userNav'>
                 <ul>
-                    <Link to='/messages'><li>
+                    <Link to='/messages'><li onClick={hideMenu}>
                         <i className='fa fa-envelope'></i>
                         <p>Messages</p>
                     </li></Link>
-                    <Link to='/contacts'><li>
+                    <Link to='/contacts'><li onClick={hideMenu}>
                         <i className='fas fa-user-friends'></i>
                         <p>Contacts</p>
                     </li></Link>
 
-                    <Link><li>
+                    <Link><li onClick={hideMenu}>
                         <i className='fa fa-gear'></i>
                         <p>Settings</p>
                     </li></Link>
-                    
-                    
                 </ul>
                 <input type='checkbox' />
             </nav>

@@ -6,6 +6,7 @@ import MessageList from './messageList';
 import OpenMessage from './openMessage';
 import {HashRouter as Router, Route} from 'react-router-dom';
 import ContactList from './contactList';
+import ContactProfile from './contactProfile';
 
 const Dashboard = () => {
 
@@ -22,6 +23,7 @@ const Dashboard = () => {
             <div className='userView2'>
                 <Router>
                     <Route exact path='/messages/:id' component={OpenMessage} />
+                    <Route path='/contacts/:id' component={ContactProfile} />
                 </Router>  
                 
 

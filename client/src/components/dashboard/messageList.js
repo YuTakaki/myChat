@@ -18,6 +18,7 @@ const MessageList = () => {
 
             <Link to='/messages/asd'><div className='messageContent' onClick={openUserView2}>
                 <img src={user}/>
+                <div className='activeIndicator activeIndicatorTrue'></div>
                 <div className='message'>
                     <h4>Yu Takaki</h4>
                     <p>bakit ba ikaw na ang

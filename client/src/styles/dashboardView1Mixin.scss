@@ -59,6 +59,11 @@
             margin-top: 20px;
             height: 90%;
             overflow-y: auto;
+            .activeIndicator{
+                margin-top: auto;
+                margin-left: -25px;
+                margin-right: 10px;
+            }
             
             .messageContent{
                 display: flex;
@@ -140,6 +145,81 @@
     .viewHide{
         width: 0;
 
+    }
+    .contactListContainer{
+        font-family: $primaryFont, sans-serif;
+        height: 100%;
+        width: 100%;
+        .activeIndicator{
+            margin-top: auto;
+            margin-left: -10px;
+        }
+        nav{
+            text-align: center;
+            button{
+                margin: 20px 10px;
+                width: 40%;
+                padding: 10px;
+                border: none;
+                outline: 0;
+                background-color: transparent;
+                color: $tertiary;
+                font-size: 1.2em;
+                border-radius: 20px;
+                cursor: pointer;
+                &:hover{
+                    color: white;
+                    background-color: $primary;
+                }
+            }
+            .activeContactBtn{
+                color: white;
+                background-color: $primary;
+                
+            }
+        }
+        .activeContactLists, .allContactLists{
+            height: 75%;
+            width: 90%;
+            margin: auto;
+            display: none;
+            overflow: auto;
+        }
+        .activeContactLists{
+            
+
+        }
+        .allContactLists{
+
+        }
+        .contactActive{
+            display: flex;
+            width: 90%;
+            align-items: center;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            &:hover{
+                background-color: $primary;
+
+            }
+            img{
+                width: 50px;
+                height: 50px;
+                border-radius: 50px;
+                
+            }
+            p{
+                font-family: $primaryFont, sans-serif;
+                color: $tertiary;
+                font-weight: 600;
+                margin-left: 20px;
+            }
+        }
+        .activeContactContainer{
+            display: block;
+        }
+        
     }
     
 }
