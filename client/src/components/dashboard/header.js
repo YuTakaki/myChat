@@ -22,7 +22,7 @@ const Header = () => {
                         <p>Contacts</p>
                     </li></Link>
 
-                    <Link><li onClick={hideMenu}>
+                    <Link to='/settings'><li onClick={hideMenu}>
                         <i className='fa fa-gear'></i>
                         <p>Settings</p>
                     </li></Link>

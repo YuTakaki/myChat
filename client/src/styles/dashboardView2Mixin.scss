@@ -169,9 +169,67 @@
                 
             }
         }
+        .personalInfo{
+            font-family: $primaryFont, sans-serif;
+            color: $quarternary;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            a{
+                color: $quarternary;
+            }
+            i{
+                position: absolute;
+                font-size: 2em;
+                top: 10px;
+                left: 20px;
+                cursor: pointer;
+            }
+            h2{
+                margin: 30px;
+
+
+            }
+            form{
+                width: 70%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+            }
+            input{
+                font-family: $primaryFont, sans-serif;
+                color: $quarternary;
+                border: none;
+                outline: none;
+                background-color: transparent;
+                border-bottom: 1px solid $quarternary;
+                margin-bottom: 20px;
+                width: 100%;
+                
+            }
+            p{
+                font-size: 1em;
+                font-weight: 600;
+                
+            }
+            label{
+                cursor: pointer;
+                width: 80%;
+            }
+        }
     }
     .userView2Open{
         width: 100%;
+    }
+    @media screen and (min-width: 900px){
+        .userView2{
+            width: 63%;
+            .fa-angle-left{
+                display: none;
+            }
+        }
     }
     
     

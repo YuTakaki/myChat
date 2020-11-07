@@ -36,6 +36,7 @@
         img{
             border-radius: 50%;
             width: 100px;
+            height: 100px;
             margin-top: 30px;
         }
         ul{
@@ -62,5 +63,21 @@
     }
     .showHeader{
         width: 100%;
+    }
+    @media screen and (min-width: 900px){
+        header{
+            width: 7%;
+            
+            img{
+                width: 50px;
+                height: 50px;
+            }
+            p{
+                display: none;
+            }
+            .fa-angle-left{
+                display: none;
+            }
+        }
     }
 }

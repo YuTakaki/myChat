@@ -9,9 +9,9 @@ const ContactProfile = () => {
         document.querySelector('.userView2').classList.remove('userView2Open');
     }
     
-    return ( 
+    return (
         <div className='contactProfile'>
-            <i className='fa fa-angle-left' onClick={closeUserView2}></i>
+            <Link to='/contacts'><i className='fa fa-angle-left' onClick={closeUserView2}></i></Link>
             <img src={user}/>
             <h1>Yu Takaki</h1>
             <div className='messageOption'>
