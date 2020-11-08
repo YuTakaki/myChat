@@ -1,0 +1,38 @@
+.mainPage{
+    height: 100vh;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: skyblue;
+    main{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); 
+        background-color: rgb(245, 245, 245);
+        
+        width: 60%;
+        // height: 60%;
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        padding: 10px;
+        border-radius: 13px;
+        box-shadow: 1px 1px 5px rgb(59, 106, 124);
+    }
+    
+    img{
+        width: 50%;
+        margin-top: auto;
+    }
+    .mainOption{
+        width: 50%;
+    }
+    h1{
+        font-family: 'Erica One', cursive;
+        margin-top: 1vw;
+        font-size: 4vw;
+        color: skyblue;
+    }
+}
