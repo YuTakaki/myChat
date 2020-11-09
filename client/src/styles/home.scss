@@ -1,38 +1,174 @@
-.mainPage{
-    height: 100vh;
+@import 'variables';
+.home{
     width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: skyblue;
+    height: 100%;
+    position: relative;
+    font-family: $primaryFont, sans-serif;
+    header{
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        max-width: 1400px;
+        min-height: 20px;
+        display: flex;
+        align-items: center;
+        padding: 0 100px;
+        justify-content: space-between;
+        color: $primary;
+        
+        h1{
+        }
+        a{
+            color: $primary;
+
+        }
+        ul{
+            list-style-type: none;
+            display: flex;
+            padding: 0;
+        }
+        li{
+            padding: 20px 30px;
+            cursor: pointer;
+            &:hover{
+                background-color: $secondary;
+                color: white;
+            }
+        }
+    }
     main{
+        position: absolute;
+        top: 60%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        justify-content: center;
+        font-family: $primaryFont, sans-serif;
+
+        .main-section{
+            width: 400px;
+            
+        }
+        img{
+            width: 500px;
+        }
+        h1{
+            font-weight: 600px;
+        }
+        button{
+            padding: 15px;
+            margin-top: 20px;
+            background-color: $primary;
+            color: $tertiary;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            &:hover{
+                background-color: $secondary;
+                color: white;
+
+            }
+        }
+    }
+    .auth{
+        
+        
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%); 
-        background-color: rgb(245, 245, 245);
-        
-        width: 60%;
-        // height: 60%;
-        display: flex;
-        text-align: center;
-        justify-content: center;
-        padding: 10px;
-        border-radius: 13px;
-        box-shadow: 1px 1px 5px rgb(59, 106, 124);
-    }
-    
-    img{
-        width: 50%;
-        margin-top: auto;
-    }
-    .mainOption{
-        width: 50%;
-    }
-    h1{
-        font-family: 'Erica One', cursive;
-        margin-top: 1vw;
-        font-size: 4vw;
-        color: skyblue;
+        transform: translate(-50%, -50%);
+        width: 320px;
+        height: 400px;
+        a{
+            color: $quarternary;
+        }
+       
+        form{
+            padding: 20px;
+            border: 1px solid rgb(209, 209, 209);
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            div{
+                position: relative;
+                width: 100%;
+                margin-bottom: 10px;
+                
+                label{
+                    position: absolute;
+                    left: 5px;
+                    top: 7px;
+                    transition: 0.5s;
+                    color: gray;
+                    background-color: white;
+                    padding: 0 10px;
+
+                }
+            }
+            .name{
+                border: none;
+                display: flex;
+                justify-content: space-between;
+                div{
+                    width: 48%;
+                }
+                margin-bottom: 0;
+            }
+            input:not(:placeholder-shown) ~ label{
+                top: -5px;
+                font-size: 0.7em;
+                
+            }
+            input:focus {
+                border: 1px solid $quarternary;
+            }
+            input:focus ~ label {
+                color: $quarternary;
+            }
+            
+            img{
+                width: 70px;
+            }
+            h2{
+                margin-bottom: 20px;
+            }
+            input{
+                margin-top: 5px;
+                border: 1px solid rgb(209, 209, 209);
+                
+                font-size: 1em;
+                padding: 5px;
+                width: 100%;
+                
+                outline: none;
+            }
+            input[type=submit]{
+                padding: 10px;
+                margin-top: 20px;
+                background-color: $primary;
+                color: $tertiary;
+                border: none;
+                outline: none;
+                cursor: pointer;
+                &:hover{
+                    background-color: $secondary;
+                    color: white;
+
+                }
+            }
+
+        }
+        .hasConfirmation{
+            font-family: $secondaryFont, sans-serif;
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid rgb(209, 209, 209);
+            background-color: white;
+            text-align: center;
+
+        }
     }
 }
