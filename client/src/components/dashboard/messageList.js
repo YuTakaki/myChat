@@ -1,18 +1,16 @@
 import React from 'react';
 import user from '../../assets/yu.jpg';
 import {Link} from 'react-router-dom';
+import ClosingOpening from '../closing_opening_hoc';
 
-const MessageList = () => {
+const MessageList = (props) => {
     const showMessageOption = (e) => {
         e.stopPropagation();
         // document.querySelectorAll('.message-options').forEach(m => m.classList.remove('messageOptionActive'))
         e.target.nextSibling.classList.toggle('messageOptionActive');
     }
 
-    const openUserView2= (e) => {
-        document.querySelector('.userView1').classList.add('viewHide');
-        document.querySelector('.userView2').classList.add('userView2Open');
-    }
+    const {openUserView2 }= props
     return ( 
         <div className='messageContainer'>
 
@@ -44,4 +42,4 @@ const MessageList = () => {
      );
 }
  
-export default MessageList;
+export default ClosingOpening(MessageList);

@@ -1,11 +1,9 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import ClosingOpening from '../closing_opening_hoc';
 
-const Settings = () => {
-    const openUserView2= (e) => {
-        document.querySelector('.userView1').classList.add('viewHide');
-        document.querySelector('.userView2').classList.add('userView2Open');
-    }
+const Settings = (props) => {
+    const {openUserView2}= props
     return ( 
         <div className='settings'>
             <h2>Settings</h2>
@@ -19,4 +17,4 @@ const Settings = () => {
      );
 }
  
-export default Settings;
+export default ClosingOpening(Settings);

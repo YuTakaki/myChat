@@ -1,13 +1,11 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import user from '../../assets/yu.jpg';
+import ClosingOpening from '../closing_opening_hoc';
 
-const ContactProfile = () => {
+const ContactProfile = (props) => {
 
-    const closeUserView2 = () => {
-        document.querySelector('.userView1').classList.remove('viewHide');
-        document.querySelector('.userView2').classList.remove('userView2Open');
-    }
+    const {closeUserView2} = props
     
     return (
         <div className='contactProfile'>
@@ -47,4 +45,4 @@ const ContactProfile = () => {
      );
 }
  
-export default ContactProfile;
+export default ClosingOpening(ContactProfile);

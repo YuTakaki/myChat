@@ -1,8 +1,9 @@
 import React from 'react';
 import user from '../../assets/yu.jpg';
 import {Link} from 'react-router-dom';
+import ClosingOpening from '../closing_opening_hoc';
 
-const ContactList = () => {
+const ContactList = (props) => {
 
     const navContactList = (e) => {
         document.querySelectorAll('.contactListContainer nav button')
@@ -19,10 +20,7 @@ const ContactList = () => {
         e.target.classList.add('activeContactBtn');
     }
 
-    const openUserView2= (e) => {
-        document.querySelector('.userView1').classList.add('viewHide');
-        document.querySelector('.userView2').classList.add('userView2Open');
-    }
+    const { openUserView2 } = props;
     return ( 
         <div className='contactListContainer'>
             <nav>
@@ -63,4 +61,4 @@ const ContactList = () => {
      );
 }
  
-export default ContactList;
+export default ClosingOpening(ContactList);

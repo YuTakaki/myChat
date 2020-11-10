@@ -1,11 +1,9 @@
 import React from 'react';
-import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom';
+import ClosingOpening from '../closing_opening_hoc';
 
-const PersonalInfo = () => {
-    const closeUserView2 = () => {
-        document.querySelector('.userView1').classList.remove('viewHide');
-        document.querySelector('.userView2').classList.remove('userView2Open');
-    }
+const PersonalInfo = (props) => {
+    const {closeUserView2} = props
     return ( 
         <div className='personalInfo'>
         <Link to='/settings'><i className='fa fa-angle-left' onClick={closeUserView2}></i></Link>
@@ -30,4 +28,4 @@ const PersonalInfo = () => {
      );
 }
  
-export default PersonalInfo;
+export default ClosingOpening(PersonalInfo);

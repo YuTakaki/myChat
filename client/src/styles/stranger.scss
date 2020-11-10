@@ -1,0 +1,20 @@
+@import 'variables';
+.stranger{
+    header{
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        min-height: 20px;
+        padding: 10px 100px;
+        width: 100%;
+        font-family: $primaryFont, sans-serif;
+        a{
+            color: black;
+        }
+        span{
+            font-style: italic;
+            color: $quarternary;
+        }
+    }
+}

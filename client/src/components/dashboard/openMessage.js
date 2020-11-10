@@ -1,12 +1,10 @@
 import React, {useRef, useEffect} from 'react';
 import user from '../../assets/yu.jpg';
 import {Link} from 'react-router-dom';
+import ClosingOpening from '../closing_opening_hoc';
 
-const OpenMessage = () => {
-    const closeUserView2 = () => {
-        document.querySelector('.userView1').classList.remove('viewHide');
-        document.querySelector('.userView2').classList.remove('userView2Open');
-    }
+const OpenMessage = (props) => {
+    const {closeUserView2} = props
 
     const chat = useRef();
     useEffect(() => {
@@ -132,4 +130,4 @@ src\components\dashboard\openMessage.js
      );
 }
  
-export default OpenMessage;
+export default ClosingOpening(OpenMessage);
