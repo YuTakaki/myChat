@@ -6,9 +6,9 @@ module.exports = (passport) => {
     passport.use(new localStrategy((username, password, done) => {
         User.findOne({$or : [{username}, {email : username}]})
             .then(user => {
-                if(!user)  return done(null, false, {msg: 'username doesnt exist'});
+                if(!user)  return done(null, false, {username_err: 'username doesnt exist'});
                 bcrypt.compare(password, user.password, (err, isMatch) => {
-                    if(!isMatch) return done(null, false, {msg: 'wrong password'});
+                    if(!isMatch) return done(null, false, {password_err: 'wrong password'});
                     return done(null, user);
                 })
             })

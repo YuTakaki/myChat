@@ -33,9 +33,7 @@ const Dashboard = () => {
                     <Route exact path='/messages/:id' component={OpenMessage} />
                     <Route path='/contacts/:id' component={ContactProfile} />
                     <Route path='/settings/personal-info' component={PersonalInfo} />
-                </Router>  
-                
-
+                </Router> 
             </div>
         </div>
      );

@@ -5,6 +5,11 @@ export const islogin_reducer = (state, action) => {
                 isLogin : true,
                 id : action.data
             }
+        case 'LOGOUT':
+            return{
+                isLogin : false,
+                id : ''
+            }
         default:
             return state;
     }

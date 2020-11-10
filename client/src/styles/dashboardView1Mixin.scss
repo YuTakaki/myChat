@@ -7,6 +7,36 @@
         overflow: hidden;
         transition: 0.5s;
         background-color: $secondary;
+        .expandSearch{
+            height: 100vh !important;
+            overflow-y: auto;
+        }
+        .searched{
+            height: 0;
+            transition: 0.5s;
+            overflow: hidden;
+            img{
+                width: 50px;
+                height: 50px;
+                border-radius: 50px;
+            }
+            .searchList{
+                display: flex;
+                align-items: center;
+                padding: 10px 20px;
+                cursor: pointer;
+                &:hover{
+                    background-color: $primary;
+
+                }
+            }
+            p{
+                font-size: 1em;
+                color: $tertiary;
+                font-family: $primaryFont, sans-serif;
+                margin-left: 20px;
+            }
+        }
         .search{
             width: 100%;
             border-bottom: 1px solid $tertiary;

@@ -1,11 +1,22 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import user from '../../assets/yu.jpg';
 import {Link} from 'react-router-dom';
+import axios from 'axios';
+import { IS_LOGIN } from '../context/isLogin';
+
 
 const Header = () => {
+    const {islogin_dispatch} = useContext(IS_LOGIN);
     const hideMenu = () => {
         document.querySelector('header').classList.remove('showHeader');
         document.querySelector('.userView1').classList.remove('viewHide');
+    }
+    const logout = () => {
+        axios.get('/authentication/sign-out')
+            .then(res => {
+                islogin_dispatch({type : 'LOGOUT'})
+            });
+
     }
     return (
         <header>
@@ -27,7 +38,7 @@ const Header = () => {
                         <p>Settings</p>
                     </li></Link>
                 </ul>
-                <input type='checkbox' />
+                <button onClick={logout}>Log-out</button>
             </nav>
         </header>
       );

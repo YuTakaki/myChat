@@ -1,8 +1,7 @@
 const express = require('express');
 const route = express.Router();
+const dashboard = require('./controllers/dashboard_cotroller');
 
-route.get('/isAuth/:id', require('../auth_setup/isAuth'), (req, res) => {
-    res.send(req.params.id);
-});
+route.get('/isAuth/:id', require('../auth_setup/isAuth'), dashboard.getUserID );
 
 module.exports = route;
