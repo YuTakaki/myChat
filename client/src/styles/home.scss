@@ -76,7 +76,7 @@
         
         
         position: absolute;
-        top: 50%;
+        top: 45%;
         left: 50%;
         transform: translate(-50%, -50%);
         width: 320px;
@@ -107,6 +107,10 @@
                     padding: 0 10px;
 
                 }
+                p{
+                    font-size: 0.8em;
+                    color: red;
+                }
             }
             .name{
                 border: none;
@@ -130,7 +134,7 @@
             }
             
             img{
-                width: 70px;
+                width: 50px;
             }
             h2{
                 margin-bottom: 20px;
@@ -140,14 +144,14 @@
                 border: 1px solid rgb(209, 209, 209);
                 
                 font-size: 1em;
-                padding: 5px;
+                padding: 4px;
                 width: 100%;
                 
                 outline: none;
             }
             input[type=submit]{
-                padding: 10px;
-                margin-top: 20px;
+                padding: 7px;
+                margin-top: 10px;
                 background-color: $primary;
                 color: $tertiary;
                 border: none;

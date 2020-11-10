@@ -26,7 +26,12 @@ const userSchema = new schema({
     },
     date : {
         type : Date,
-        default : date.now()
+        default : Date.now()
+    },
+    profile : {
+        type: String,
+        default : ""
+
     },
     messages : [message],
     contacts : [contacts],

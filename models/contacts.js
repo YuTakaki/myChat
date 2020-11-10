@@ -12,7 +12,7 @@ const contactsSchema = new schema(
         },
         date : {
             type : Date,
-            default : date.now()
+            default : Date.now()
         },
     }
 );

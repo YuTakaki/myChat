@@ -9,9 +9,10 @@ const ClosingOpening = (Component) => {
         document.querySelector('.userView1').classList.add('viewHide');
         document.querySelector('.userView2').classList.add('userView2Open');
     }
-    const upgradedComponent = () => {
+    const upgradedComponent = (props) => {
         return(
             <Component
+                {...props}
                 openUserView2={openUserView2}
                 closeUserView2={closeUserView2}
              />

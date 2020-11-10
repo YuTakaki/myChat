@@ -1,19 +1,24 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import '../../styles/dashboard.scss';
 import Header from './header';
 import Search from './search';
 import MessageList from './messageList';
 import OpenMessage from './openMessage';
-import {HashRouter as Router, Route} from 'react-router-dom';
+import {HashRouter as Router, Route, Redirect} from 'react-router-dom';
 import ContactList from './contactList';
 import ContactProfile from './contactProfile';
 import Settings from './setting';
 import PersonalInfo from './personal_info';
+import { IS_LOGIN } from '../context/isLogin';
 
 const Dashboard = () => {
 
+    const {islogin} = useContext(IS_LOGIN);
+
     return ( 
+        
         <div className='dashboard'>
+        {!islogin.isLogin ? (<Redirect to='/home'/>) : (<Redirect to='/messages'/>)}
             <Header />
             <div className='userView1'>
                 <Search />

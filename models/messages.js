@@ -4,7 +4,7 @@ const schema = mongoose.Schema;
 const messageSchema = new schema({
     date : {
         type : Date,
-        default : date.now()
+        default : Date.now()
     },
     message : {
         type: String,
@@ -25,7 +25,7 @@ const messagesSchema = new schema({
     },
     date : {
         type : Date,
-        default : date.now()
+        default : Date.now()
     },
     messages : [messageSchema]
 });
