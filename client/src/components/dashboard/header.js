@@ -6,7 +6,7 @@ import { IS_LOGIN } from '../context/isLogin';
 
 
 const Header = () => {
-    const {islogin_dispatch} = useContext(IS_LOGIN);
+    const {islogin, islogin_dispatch} = useContext(IS_LOGIN);
     const hideMenu = () => {
         document.querySelector('header').classList.remove('showHeader');
         document.querySelector('.userView1').classList.remove('viewHide');
@@ -14,7 +14,9 @@ const Header = () => {
     const logout = () => {
         axios.get('/authentication/sign-out')
             .then(res => {
-                islogin_dispatch({type : 'LOGOUT'})
+                axios.get('/authentication/offline/' + islogin.id);
+                islogin_dispatch({type : 'LOGOUT'});
+                
             });
 
     }

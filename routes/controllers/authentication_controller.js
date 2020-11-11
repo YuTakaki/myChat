@@ -68,8 +68,26 @@ const logout =  (req, res) => {
     res.send(true);
 }
 
+const offline = (req, res) => {
+    User.findOne({_id : req.params.id})
+        .then(user => {
+            user.online = false;
+            user.save();
+        });
+};
+
+const online = (req, res) => {
+    User.findOne({_id : req.params.id})
+        .then(user => {
+            user.online = true;
+            user.save();
+        });
+};
+
 module.exports = {
     sign_up,
     sign_in,
-    logout
+    logout,
+    offline,
+    online
 }

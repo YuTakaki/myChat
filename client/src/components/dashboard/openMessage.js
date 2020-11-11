@@ -4,11 +4,13 @@ import {Link} from 'react-router-dom';
 import ClosingOpening from '../closing_opening_hoc';
 
 const OpenMessage = (props) => {
-    const {closeUserView2} = props
+    const {closeUserView2} = props;
+
 
     const chat = useRef();
     useEffect(() => {
         chat.current.scrollTop = chat.current.scrollHeight;
+        console.log('hi');
     });
     
     

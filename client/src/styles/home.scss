@@ -20,6 +20,9 @@
         
         h1{
         }
+        i{
+            display: none;
+        }
         a{
             color: $primary;
 
@@ -31,6 +34,7 @@
         }
         li{
             padding: 20px 30px;
+            font-weight: bold;
             cursor: pointer;
             &:hover{
                 background-color: $secondary;
@@ -173,6 +177,59 @@
             background-color: white;
             text-align: center;
 
+        }
+    }
+}
+
+@media only screen and(max-width : 900px){
+    .home{
+        overflow: hidden;
+        header{
+            padding: 0 20px;
+            z-index: 10 !important;
+            i{
+                display: block !important;
+                font-size: 2em;
+            }
+            nav{
+                position: absolute;
+                top: 43px;
+                
+                width: 100%;
+                left: 1000px;
+                height: 100vh !important;
+                background-color: rgb(247, 247, 247);
+                transition: 0.5s;
+                ul{
+                    flex-direction: column;
+                    text-align: center;
+                }
+                li{
+                    padding: 40px 0;
+                }
+            }
+            .showHomeNav{
+                left: 0
+
+            }
+
+        }
+        main{
+            flex-direction: column;
+            align-items: center;
+            width: 90%;
+            z-index: 0;
+            img{
+                width: 80%;
+                margin-top: 10px;
+                
+            }
+            .main-section{
+                width: 80%;
+                text-align: center;
+                margin: auto;
+                
+            }
         }
     }
 }

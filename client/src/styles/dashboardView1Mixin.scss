@@ -9,7 +9,7 @@
         background-color: $secondary;
         .expandSearch{
             height: 100vh !important;
-            overflow-y: auto;
+            overflow-y: auto !important;
         }
         .searched{
             height: 0;
@@ -69,6 +69,14 @@
                     align-items: center;
                     &:hover{
                         color: white;
+                    }
+                    i{
+                        font-size: 1em;
+                        display: none;
+                    }
+                    .closeSearchIcon{
+                        display: block;
+
                     }
                     
                     

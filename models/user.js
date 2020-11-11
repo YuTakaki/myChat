@@ -33,6 +33,10 @@ const userSchema = new schema({
         default : ""
 
     },
+    online : {
+        type: Boolean,
+        default : true
+    },
     messages : [message],
     contacts : [contacts],
 });

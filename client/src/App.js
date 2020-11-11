@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {HashRouter as Router, Route, Switch} from 'react-router-dom'
 import IsLogin from './components/context/isLogin';
 import Dashboard from './components/dashboard/dashboard';
 import StrangerDashboard from './components/dashboard_stranger/stranger';
 import Home from './components/home';
+import axios from 'axios';
 
 function App() {
   return (
