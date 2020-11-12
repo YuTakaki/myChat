@@ -1,7 +1,8 @@
-import React from 'react';
-import user from '../../assets/yu.jpg';
+import React, {useContext} from 'react';
+import userLogo from '../../assets/yu.jpg';
 import {Link} from 'react-router-dom';
 import ClosingOpening from '../closing_opening_hoc';
+import { USERDATA } from '../context/userData';
 
 const ContactList = (props) => {
 
@@ -20,6 +21,8 @@ const ContactList = (props) => {
         e.target.classList.add('activeContactBtn');
     }
 
+    const {user} = useContext(USERDATA);
+
     const { openUserView2 } = props;
     return ( 
         <div className='contactListContainer'>
@@ -28,31 +31,31 @@ const ContactList = (props) => {
                 <button onClick={navContactList} className='allContacts'>All</button>
             </nav>
             <div className='activeContacts activeContactLists activeContactContainer'>
-                <Link to='/contacts/sa'>
-                    <div className='contactActive' onClick={openUserView2}>
-                        <img src={user}/>
-                        <div className='activeIndicator activeIndicatorTrue'></div>
-                        <p>Yu Takaki</p>
-                    </div>
-                </Link>
-                <Link to='/contacts/sa'>
-                    <div className='contactActive' onClick={openUserView2}>
-                        <img src={user}/>
-                        <div className='activeIndicator activeIndicatorTrue'></div>
-                        <p>Yu Takaki</p>
-                    </div>
-                </Link>
+                {user.contacts && user.contacts.map(contact => contact.online && (
+                    <Link to={`/contacts/${contact._id}`}>
+                        <div className='contactActive' onClick={openUserView2}>
+                            <img src={userLogo}/>
+                            <div className='activeIndicator activeIndicatorTrue'></div>
+                            <p>{contact.username}</p>
+                        </div>
+                    </Link>
+
+                ))}
                 
 
             </div>
             <div className='allContacts allContactLists'>
-                <Link to='/contacts/sa'>
-                    <div className='contactActive' onClick={openUserView2}>
-                        <img src={user}/>
-                        <div className='activeIndicator activeIndicatorTrue'></div>
-                        <p>Yu Takaki</p>
-                    </div>
-                </Link>
+                {user.contacts && user.contacts.map(contact => (
+                    <Link to={`/contacts/${contact._id}`}>
+                        <div className='contactActive' onClick={openUserView2}>
+                            <img src={userLogo}/>
+                            <div className='activeIndicator activeIndicatorTrue'></div>
+                            <p>{contact.username}</p>
+                        </div>
+                    </Link>
+
+                ))}
+                
 
 
             </div>

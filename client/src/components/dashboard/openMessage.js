@@ -1,24 +1,32 @@
-import React, {useRef, useEffect} from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import user from '../../assets/yu.jpg';
 import {Link} from 'react-router-dom';
 import ClosingOpening from '../closing_opening_hoc';
+import axios from 'axios';
 
 const OpenMessage = (props) => {
     const {closeUserView2} = props;
 
 
     const chat = useRef();
+    const [userInfo, setUserInfo] = useState({})
     useEffect(() => {
         chat.current.scrollTop = chat.current.scrollHeight;
-        console.log('hi');
-    });
+        axios.get(`/dashboard/user/${props.match.params.id}`)
+            .then(res => {
+                setUserInfo(res.data);
+            })
+    }, []);
+    useEffect(() => {
+        console.log(userInfo);
+    }, [userInfo]);
     
     
     return ( 
         <>
             <div className='chatHeader'>
                 <Link to='/messages'><i className='fa fa-angle-left' onClick={closeUserView2}></i></Link>
-                <img src={user} />
+                <Link to={userInfo._id && `/contacts/${userInfo._id}`}><img src={user} /></Link>
                 <div className='activeIndicator activeIndicatorTrue'></div>
                 <h4>Yu Takaki</h4>
 

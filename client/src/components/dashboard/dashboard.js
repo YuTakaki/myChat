@@ -11,17 +11,24 @@ import Settings from './setting';
 import PersonalInfo from './personal_info';
 import { IS_LOGIN } from '../context/isLogin';
 import axios from 'axios';
+import { USERDATA } from '../context/userData';
 
 const Dashboard = () => {
 
     const {islogin} = useContext(IS_LOGIN);
+    const {user_dispatch} = useContext(USERDATA);
 
     useEffect(()=>{
-        axios.get('/authentication/online/' + islogin.id);
+        
+        axios.get(`/dashboard/user/${islogin.id}`)
+            .then(res => {
+                user_dispatch({type : 'USER', data : res.data});
+                axios.get('/authentication/online/' + islogin.id);
+            })
     
     },[]);
     window.addEventListener('beforeunload', () => {
-        axios.get('/authentication/offline/' + islogin.id);
+        axios.get('/autheication/offline/' + islogin.id);
     });
 
     return ( 

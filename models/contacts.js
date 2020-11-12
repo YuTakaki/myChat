@@ -9,6 +9,7 @@ const contactsSchema = new schema(
         },
         senderProfile : {
             type: String,
+            default:''
         },
         date : {
             type : Date,

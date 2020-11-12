@@ -1,22 +1,59 @@
-import React from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {Link} from 'react-router-dom';
-import user from '../../assets/yu.jpg';
+import userLogo from '../../assets/yu.jpg';
 import ClosingOpening from '../closing_opening_hoc';
+import axios from 'axios';
+import { IS_LOGIN } from '../context/isLogin';
+import { USERDATA } from '../context/userData';
 
 const ContactProfile = (props) => {
 
-    const {closeUserView2} = props
+    const {closeUserView2} = props;
+    const {islogin} = useContext(IS_LOGIN);
+    const {user, user_dispatch} = useContext(USERDATA);
+
+    const [contactProfile, setContactProfile] = useState({});
+    useEffect(() => {
+        axios.get(`/dashboard/user/${props.match.params.id}`)
+            .then(res => {
+                setContactProfile(res.data);
+            })
+    }, []);
+
+    useEffect(() => {
+        console.log(contactProfile);
+    }, [contactProfile]);
+
+    const addToContact = () => {
+        axios.post(`/dashboard/addToContact/${islogin.id}`, {username : contactProfile.username, _id : contactProfile._id})
+            .then(res => {
+                user_dispatch({type : 'USER', data : res.data});
+            });
+    }
+    const deleteToContact = () => {
+        axios.post(`/dashboard/deleteToContact/${islogin.id}`, {username : contactProfile.username})
+            .then(res => {
+                user_dispatch({type : 'USER', data : res.data});
+            });
+    }
     
     return (
         <div className='contactProfile'>
             <Link to='/contacts'><i className='fa fa-angle-left' onClick={closeUserView2}></i></Link>
-            <img src={user}/>
+            <img src={userLogo}/>
             <h1>Yu Takaki</h1>
             <div className='messageOption'>
                 <ul>
                     <Link to='/messages/sa'><li className='fa fa-envelope'></li></Link>
-                    <Link><li className='fa fa-phone'></li></Link>
-                    <Link><li className='fa fa-video'></li></Link>
+                    {user.contacts && user.contacts.every(contact => contact.username !== contactProfile.username) ? 
+                    (
+                        <li onClick={addToContact} className='fa fa-user-plus'></li>
+                    ) : (
+                        <li onClick={deleteToContact} className='fas fa-user-minus'></li>
+
+                    )}
+                    
+                    {/* <Link><li className='fa fa-video'></li></Link> */}
                 </ul>
             </div>
             <div className='userInfo'>

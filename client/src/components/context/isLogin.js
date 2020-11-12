@@ -12,7 +12,6 @@ const IsLogin = (props) => {
     })
     useEffect(()=> {
         localStorage.setItem('myChat', JSON.stringify(islogin));
-        console.log(islogin);
 
     },[islogin])
     return ( 
