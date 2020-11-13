@@ -36,6 +36,7 @@ io.on('connection', socket => {
     socket.on('connectToUser', room => {
         socket.join(room);
         socket.on('sendMessage', ({message, username, sender, room}) => {
+            console.log('hi')
             User.findOne({username : sender})
                 .then(user=>{
                     if(user.messages.some(messageUser => messageUser.username === username)){
@@ -68,7 +69,10 @@ io.on('connection', socket => {
                                         user.messages.push({_id, username : sender, messages : [{sender , message, _id : message_id}]});
                                     }
                                     user.save()
-                                        .then(user => io.to(room).emit('send', sender))
+                                        .then(user => {
+                                            socket.broadcast.to(room).emit('send', currentUser);
+                                            socket.emit('send', user);
+                                        })
                                 });
                         });
                 });

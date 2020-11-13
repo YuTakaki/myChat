@@ -1,4 +1,4 @@
-import React, {useRef, useEffect, useState, memo, useContext} from 'react';
+import React, {useRef, useEffect, useState, memo, useContext, useCallback} from 'react';
 import userLogo from '../../assets/yu.jpg';
 import {Link} from 'react-router-dom';
 import ClosingOpening from '../closing_opening_hoc';
@@ -17,37 +17,47 @@ const OpenMessage = (props) => {
     
     const chat = useRef();
     const [userInfo, setUserInfo] = useState({});
+    const [messages, setMessages] = useState([])
     const [room, setRoom] = useState('');
     useEffect(() => {
-        console.log('ji')
-        chat.current.scrollTop = chat.current.scrollHeight;
         
-        socket.on('send', (user) => {
-            console.log(user);
-        });
-
         
-    }, []);
+        
+        
+    }, [])
+    
 
     useEffect(() => {
+        
         if(props.match.params.id !== userInfo._id){
             axios.get(`/dashboard/user/${props.match.params.id}`)
                 .then(res => {
                     setUserInfo(res.data);
-                    const userData = res.data;
-                    const room = userData.messages.filter(messageUser => messageUser.username === user.username)[0]._id;
-                    setRoom(room);
-                    console.log(room);
-                    socket.emit('connectToUser', room);
+                    if(res.data){
+                        const userData = res.data;
+                        const room = userData && userData.messages.filter(messageUser => messageUser.username === user.username)[0]._id;
+                        setRoom(room);
+                        socket.emit('connectToUser', room);
+                    }
                 })
         }
     })
     useEffect(() => {
-        
+        // console.log(userInfo.messages);
+
+        const filteredMessage = userInfo.messages !== undefined && userInfo.messages.filter(messageUser => messageUser.username === user.username)[0].messages;
+        setMessages(filteredMessage);
     }, [userInfo]);
 
-    const messageInput = useRef()
+    useEffect(() => {
+        chat.current.scrollTop = chat.current.scrollHeight;
+    }, [messages]);
 
+    
+
+    const messageInput = useRef();
+    
+    
     const sendMessage = (e) => {
         e.preventDefault()
         const send = {
@@ -56,8 +66,15 @@ const OpenMessage = (props) => {
             username : userInfo.username,
             room
         }
-        socket.emit('sendMessage', send)
-        messageInput.current.value = ''
+        // useCallback(() =>{ socket.emit('sendMessage', send)},[]);
+            socket.emit('sendMessage', send)
+
+        
+        socket.on('send', (user) => {
+            console.log(user);
+            setUserInfo(user);
+        });
+        messageInput.current.value = '';
     };
     return ( 
         <>
@@ -69,96 +86,15 @@ const OpenMessage = (props) => {
 
             </div>
             <div className='chat' ref={chat}>
-                {/* <div className='chat-content'>
-                    <img src={user}/>
-                    <div className='chat-message'>
-                        <p>components\dashboard\openMessage.js
-[1]   Line 13:17:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
-[1]   Line 19:21:  img elements must have an alt prop, either with meaningful text, or an empty string for d</p>
+                {messages && messages.map(message => (
+                    <div className={`chat-content ${message.sender === user.username ? 'userMessage' : ''}`}>
+                        <img src={userLogo}/>
+                        <div className='chat-message'>
+                            <p>{message.message}</p>
+                        </div>
+                        <p>12:20am</p>
                     </div>
-                    <p>12:20am</p>
-                </div>
-
-                <div className='chat-content userMessage'>
-                    <img src={user}/>
-                    <div className='chat-message'>
-                        <p>hi</p>
-                    </div>
-                    <p>12:20am</p>
-                </div>
-                <div className='chat-content'>
-                    <img src={user}/>
-                    <div className='chat-message'>
-                        <p>components\dashboard\openMessage.js
-[1]   Line 13:17:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
-[1]   Line 19:21:  img elements must have an alt prop, either with meaningful text, or an empty string for d</p>
-                    </div>
-                    <p>12:20am</p>
-                </div>
-
-                <div className='chat-content userMessage'>
-                    <img src={user}/>
-                    <div className='chat-message'>
-                        <p>hi</p>
-                    </div>
-                    <p>12:20am</p>
-                </div>
-                <div className='chat-content'>
-                    <img src={user}/>
-                    <div className='chat-message'>
-                        <p>components\dashboard\openMessage.js
-[1]   Line 13:17:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
-[1]   Line 19:21:  img elements must have an alt prop, either with meaningful text, or an empty string for d</p>
-                    </div>
-                    <p>12:20am</p>
-                </div>
-
-                <div className='chat-content userMessage'>
-                    <img src={user}/>
-                    <div className='chat-message'>
-                        <p>hi</p>
-                    </div>
-                    <p>12:20am</p>
-                </div>
-                <div className='chat-content'>
-                    <img src={user}/>
-                    <div className='chat-message'>
-                        <p>components\dashboard\openMessage.js
-[1]   Line 13:17:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
-[1]   Line 19:21:  img elements must have an alt prop, either with meaningful text, or an empty string for d</p>
-                    </div>
-                    <p>12:20am</p>
-                </div>
-
-                <div className='chat-content userMessage'>
-                    <img src={user}/>
-                    <div className='chat-message'>
-                        <p>must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
-  Line 88:21:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
-overrideMethod @ react_devtools_backend.js:2450
-printWarnings @ webpackHotDevClient.js:138
-handleWarnings @ webpackHotDevClient.js:143
-push../node_modules/react-dev-utils/webpackHotDevClient.js.connection.onmessage @ webpackHotDevClient.js:210
-openMessage.js:13 hi
-2react_devtools_backend.js:2450 src\components\dashboard\header.js
-  Line 11:13:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
-
-src\components\dashboard\messageList.js
-  Line 18:17:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
-
-src\components\dashboard\openMessage.js
-  Line 20:17:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
-  Line 26:21:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
-  Line 36:21:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
-  Line 43:21:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
-  Line 53:21:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
-  Line 60:21:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
-  Line 70:21:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
-  Line 77:21:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
-  Line 87:21:  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text</p>
-                    </div>
-                    <p>12:20am</p>
-                </div> */}
+                ))}
 
             </div>
             <div className='chat-input'>
