@@ -22,6 +22,7 @@ const messagesSchema = new schema({
     },
     senderProfile : {
         type: String,
+        default:'',
     },
     date : {
         type : Date,

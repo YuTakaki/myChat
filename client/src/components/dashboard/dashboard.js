@@ -17,14 +17,14 @@ const Dashboard = () => {
 
     const {islogin} = useContext(IS_LOGIN);
     const {user_dispatch} = useContext(USERDATA);
-
+    
     useEffect(()=>{
         
         axios.get(`/dashboard/user/${islogin.id}`)
             .then(res => {
                 user_dispatch({type : 'USER', data : res.data});
                 axios.get('/authentication/online/' + islogin.id);
-            })
+            });
     
     },[]);
     window.addEventListener('beforeunload', () => {
