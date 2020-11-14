@@ -43,10 +43,53 @@ const deleteToContact = (req, res) => {
         })
 }
 
+const sendMessage = (req, res) => {
+    const {message, username, sender} = req.body;
+    User.findOne({username : sender})
+        .then(user=>{
+            if(user.messages.some(messageUser => messageUser.username === username)){
+                user.messages.map(messageUser => {
+                    if(messageUser.username === username){
+                        messageUser.messages.push({message, sender})
+                    }
+                });
+                user.date = Date.now();
+            }else{
+
+                user.messages.push({username, messages : [{sender , message}]})
+            }
+            user.save()
+                .then(currentUser => {   
+                    User.findOne({username})
+                        .then(user=>{
+                            const index = currentUser.messages.findIndex(messageUser => messageUser.username === username);
+                            const _id = currentUser.messages[index]._id;
+                            const length = currentUser.messages[index].messages.length - 1
+                            const message_id = currentUser.messages[index].messages[length]._id;
+                            if(user.messages.some(messageUser => messageUser.username === sender)){
+                                user.messages.map(messageUser => {
+                                    if(messageUser.username === sender){
+                                        messageUser.messages.push({message, sender, _id : message_id});
+                                    }
+                                });
+                                user.date = Date.now();
+                            }else{
+                                user.messages.push({_id, username : sender, messages : [{sender , message, _id : message_id}]});
+                            }
+                            user.save()
+                                .then(user => {
+                                    res.send(true);
+                                });
+                        });
+                });
+        });
+}
+
 module.exports = {
     getUserID,
     advanceSearch,
     getUserInfo,
     addToContact,
-    deleteToContact
+    deleteToContact,
+    sendMessage
 }

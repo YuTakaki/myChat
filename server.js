@@ -33,51 +33,31 @@ const server = app.listen(port, () => console.log(`you are listening to port ${p
 
 const io = socket(server);
 io.on('connection', socket => {
+    console.log(socket.id);
     socket.on('connectToUser', room => {
         socket.join(room);
+        console.log('jioin');
         socket.on('sendMessage', ({message, username, sender, room}) => {
-            console.log('hi')
+            console.log(message);
+            
             User.findOne({username : sender})
-                .then(user=>{
-                    if(user.messages.some(messageUser => messageUser.username === username)){
-                        user.messages.map(messageUser => {
-                            if(messageUser.username === username){
-                                messageUser.messages.push({message, sender})
-                            }
-                        });
-                        user.date = Date.now();
-                    }else{
-    
-                        user.messages.push({username, messages : [{sender , message}]})
-                    }
-                    user.save()
-                        .then(currentUser => {   
-                            User.findOne({username})
-                                .then(user=>{
-                                    const index = currentUser.messages.findIndex(messageUser => messageUser.username === username);
-                                    const _id = currentUser.messages[index]._id;
-                                    const length = currentUser.messages[index].messages.length - 1
-                                    const message_id = currentUser.messages[index].messages[length]._id;
-                                    if(user.messages.some(messageUser => messageUser.username === sender)){
-                                        user.messages.map(messageUser => {
-                                            if(messageUser.username === sender){
-                                                messageUser.messages.push({message, sender, _id : message_id});
-                                            }
-                                        });
-                                        user.date = Date.now();
-                                    }else{
-                                        user.messages.push({_id, username : sender, messages : [{sender , message, _id : message_id}]});
-                                    }
-                                    user.save()
-                                        .then(user => {
-                                            socket.broadcast.to(room).emit('send', currentUser);
-                                            socket.emit('send', user);
-                                        })
-                                });
-                        });
+                .then(currentuser => {
+                    User.findOne({username})
+                        .then(user => {
+                            socket.broadcast.to(room).emit('send', currentuser)
+                            socket.emit('send', user)
+
+                        })
+                    
                 });
+                
+            
         });
-    })
+    });
+    socket.on('disconnectUser', room =>{
+        console.log('leave')
+        socket.leave(room);
+    });
     
 
 });

@@ -12,6 +12,7 @@ import PersonalInfo from './personal_info';
 import { IS_LOGIN } from '../context/isLogin';
 import axios from 'axios';
 import { USERDATA } from '../context/userData';
+import {socket} from '../socket';
 
 const Dashboard = () => {
 
@@ -55,4 +56,4 @@ const Dashboard = () => {
      );
 }
  
-export default Dashboard;
+export default React.memo(Dashboard);

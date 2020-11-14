@@ -3,10 +3,8 @@ import userLogo from '../../assets/yu.jpg';
 import {Link} from 'react-router-dom';
 import ClosingOpening from '../closing_opening_hoc';
 import axios from 'axios';
-import io from 'socket.io-client';
 import { USERDATA } from '../context/userData';
-
-const socket = io.connect();
+import {socket} from '../socket';
 
 
 
@@ -20,27 +18,43 @@ const OpenMessage = (props) => {
     const [messages, setMessages] = useState([])
     const [room, setRoom] = useState('');
     useEffect(() => {
+        if(props.match.params.id){
+            console.log(2);
+            socket.connect();
+            
+            socket.emit('connectToUser', room);
+
+        }
+        socket.on('send', (user) => {
+            setUserInfo(user);
+            console.log('hi');
+        });
         
-        
-        
+        return() => {
+            // socket.emit('disconnectUser', room);
+            socket.disconnect();
+        }   
         
     }, [])
     
 
     useEffect(() => {
         
-        if(props.match.params.id !== userInfo._id){
+        if(props.match.params.id !== userInfo._id && props.match.params.id){
             axios.get(`/dashboard/user/${props.match.params.id}`)
                 .then(res => {
                     setUserInfo(res.data);
-                    if(res.data){
-                        const userData = res.data;
-                        const room = userData && userData.messages.filter(messageUser => messageUser.username === user.username)[0]._id;
-                        setRoom(room);
-                        socket.emit('connectToUser', room);
-                    }
+                    const room = user.username && res.data.messages.filter(messageUser => messageUser.username === user.username)[0]._id;
+                    setRoom(room);
+                    console.log(room);
+                    
+                    
+                    console.log(1);
+                    
+                    
                 })
         }
+        
     })
     useEffect(() => {
         // console.log(userInfo.messages);
@@ -53,6 +67,7 @@ const OpenMessage = (props) => {
         chat.current.scrollTop = chat.current.scrollHeight;
     }, [messages]);
 
+
     
 
     const messageInput = useRef();
@@ -64,16 +79,13 @@ const OpenMessage = (props) => {
             message : messageInput.current.value,
             sender : user.username,
             username : userInfo.username,
-            room
         }
         // useCallback(() =>{ socket.emit('sendMessage', send)},[]);
-            socket.emit('sendMessage', send)
+        axios.post('/dashboard/sendMessage', send)
+            .then(res => {
+                socket.emit('sendMessage', {...send, room});
+            });
 
-        
-        socket.on('send', (user) => {
-            console.log(user);
-            setUserInfo(user);
-        });
         messageInput.current.value = '';
     };
     return ( 
