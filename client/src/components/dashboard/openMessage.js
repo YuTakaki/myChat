@@ -19,23 +19,17 @@ const OpenMessage = (props) => {
     const [room, setRoom] = useState('');
     useEffect(() => {
         if(props.match.params.id){
-            console.log(2);
-            socket.connect();
-            
-            socket.emit('connectToUser', room);
 
+            socket.emit('connectToUser', room);
         }
-        socket.on('send', (user) => {
-            setUserInfo(user);
-            console.log('hi');
-        });
         
         return() => {
-            // socket.emit('disconnectUser', room);
-            socket.disconnect();
+            socket.emit('disconnectUser', room);
         }   
         
     }, [])
+
+    
     
 
     useEffect(() => {
@@ -49,11 +43,21 @@ const OpenMessage = (props) => {
                     console.log(room);
                     
                     
+                    
                     console.log(1);
                     
                     
                 })
         }
+        socket.on('send', (user) => {
+            setUserInfo(user);
+            console.log('hi');
+        });
+        
+        
+        
+
+        
         
     })
     useEffect(() => {
@@ -66,6 +70,8 @@ const OpenMessage = (props) => {
     useEffect(() => {
         chat.current.scrollTop = chat.current.scrollHeight;
     }, [messages]);
+
+    
 
 
     
@@ -85,6 +91,7 @@ const OpenMessage = (props) => {
             .then(res => {
                 socket.emit('sendMessage', {...send, room});
             });
+            
 
         messageInput.current.value = '';
     };

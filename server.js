@@ -32,32 +32,38 @@ app.use('/dashboard', require('./routes/dashboard'));
 const server = app.listen(port, () => console.log(`you are listening to port ${port}`));
 
 const io = socket(server);
+let users = 0
 io.on('connection', socket => {
     console.log(socket.id);
+    users++
+    console.log(users);
     socket.on('connectToUser', room => {
         socket.join(room);
         console.log('jioin');
         socket.on('sendMessage', ({message, username, sender, room}) => {
-            console.log(message);
-            
+            console.log(message + ' ' + socket.id)
             User.findOne({username : sender})
                 .then(currentuser => {
                     User.findOne({username})
                         .then(user => {
                             socket.broadcast.to(room).emit('send', currentuser)
                             socket.emit('send', user)
-
-                        })
-                    
-                });
-                
-            
+    
+                        }) 
+                }); 
         });
+        socket.on('disconnectUser', room =>{
+            console.log('leave')
+            socket.leave(room);
+        });
+        
     });
-    socket.on('disconnectUser', room =>{
-        console.log('leave')
-        socket.leave(room);
-    });
+    
+    socket.on('disconnect', room => {
+        console.log('disconnect' + socket.id)
+        users--;
+        console.log(users);
+    })
     
 
 });
