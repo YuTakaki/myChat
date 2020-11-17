@@ -20,13 +20,16 @@ const Dashboard = () => {
     const {user_dispatch} = useContext(USERDATA);
     
     useEffect(()=>{
-        socket.open();
+        socket.connect();
         
         axios.get(`/dashboard/user/${islogin.id}`)
             .then(res => {
                 user_dispatch({type : 'USER', data : res.data});
                 axios.get('/authentication/online/' + islogin.id);
             });
+        return () => {
+            socket.disconnect();
+        }
     },[]);
     window.addEventListener('beforeunload', () => {
         axios.get('/autheication/offline/' + islogin.id);

@@ -19,47 +19,30 @@ const OpenMessage = (props) => {
     const [room, setRoom] = useState('');
     useEffect(() => {
         if(props.match.params.id){
-
-            socket.emit('connectToUser', room);
+            socket.on('send', (user) => {
+                setUserInfo(user);
+            });
         }
         
         return() => {
             socket.emit('disconnectUser', room);
         }   
-        
     }, [])
 
     
     
 
     useEffect(() => {
-        
         if(props.match.params.id !== userInfo._id && props.match.params.id){
             axios.get(`/dashboard/user/${props.match.params.id}`)
                 .then(res => {
                     setUserInfo(res.data);
                     const room = user.username && res.data.messages.filter(messageUser => messageUser.username === user.username)[0]._id;
                     setRoom(room);
-                    console.log(room);
-                    
-                    
-                    
-                    console.log(1);
-                    
-                    
-                })
-        }
-        socket.on('send', (user) => {
-            setUserInfo(user);
-            console.log('hi');
-        });
-        
-        
-        
-
-        
-        
-    })
+                    console.log(room);                
+                });
+        };
+    });
     useEffect(() => {
         // console.log(userInfo.messages);
 
@@ -70,6 +53,10 @@ const OpenMessage = (props) => {
     useEffect(() => {
         chat.current.scrollTop = chat.current.scrollHeight;
     }, [messages]);
+
+    useEffect(() => {
+        socket.emit('connectToUser', room);
+    }, [room])
 
     
 
@@ -87,12 +74,8 @@ const OpenMessage = (props) => {
             username : userInfo.username,
         }
         // useCallback(() =>{ socket.emit('sendMessage', send)},[]);
-        axios.post('/dashboard/sendMessage', send)
-            .then(res => {
-                socket.emit('sendMessage', {...send, room});
-            });
-            
-
+        setMessages([...messages, send]);
+        socket.emit('sendMessage', {...send, room});
         messageInput.current.value = '';
     };
     return ( 
