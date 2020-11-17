@@ -21,33 +21,36 @@ const OpenMessage = (props) => {
         if(props.match.params.id){
             socket.on('send', (user) => {
                 setUserInfo(user);
+                console.log('hi');
             });
-        }
-        
+        }   
         return() => {
             socket.emit('disconnectUser', room);
         }   
     }, [])
-
-    
-    
-
     useEffect(() => {
         if(props.match.params.id !== userInfo._id && props.match.params.id){
             axios.get(`/dashboard/user/${props.match.params.id}`)
                 .then(res => {
                     setUserInfo(res.data);
-                    const room = user.username && res.data.messages.filter(messageUser => messageUser.username === user.username)[0]._id;
-                    setRoom(room);
-                    console.log(room);                
+                    setMessages([]);
+                                
                 });
         };
     });
     useEffect(() => {
-        // console.log(userInfo.messages);
-
-        const filteredMessage = userInfo.messages !== undefined && userInfo.messages.filter(messageUser => messageUser.username === user.username)[0].messages;
-        setMessages(filteredMessage);
+        const filterMessage = userInfo.messages !== undefined && userInfo.messages.filter(messageUser => messageUser.username === user.username)[0];
+        if(filterMessage !== undefined){
+            const updatedMessage = userInfo.messages !== undefined && filterMessage.messages;
+            setMessages(updatedMessage);
+        }
+        if(room === ''){
+            const filterMessageRoom = userInfo.messages && userInfo.messages.filter(messageUser => messageUser.username === user.username)[0];
+            if(filterMessageRoom !== undefined){
+                const room = user.username && filterMessageRoom._id;
+                setRoom(room);
+            }  
+        }
     }, [userInfo]);
 
     useEffect(() => {
@@ -55,17 +58,12 @@ const OpenMessage = (props) => {
     }, [messages]);
 
     useEffect(() => {
-        socket.emit('connectToUser', room);
+        if(room !== ''){
+            socket.emit('connectToUser', room);
+        }
+        
     }, [room])
-
-    
-
-
-    
-
     const messageInput = useRef();
-    
-    
     const sendMessage = (e) => {
         e.preventDefault()
         const send = {
@@ -73,7 +71,6 @@ const OpenMessage = (props) => {
             sender : user.username,
             username : userInfo.username,
         }
-        // useCallback(() =>{ socket.emit('sendMessage', send)},[]);
         setMessages([...messages, send]);
         socket.emit('sendMessage', {...send, room});
         messageInput.current.value = '';
