@@ -31,7 +31,10 @@ const userSchema = new schema({
     profile : {
         type: String,
         default : ""
-
+    },
+    bio : {
+        type: String,
+        default : "enter your bio"
     },
     online : {
         type: Boolean,
