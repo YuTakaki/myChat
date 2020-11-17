@@ -8,9 +8,7 @@ import {socket} from '../socket';
 
 const OpenMessage = (props) => {
     const {closeUserView2} = props;
-    const {user} = useContext(USERDATA);
-    
-    
+    const {user, user_dispatch} = useContext(USERDATA);
     const chat = useRef();
     const [userInfo, setUserInfo] = useState({});
     const [messages, setMessages] = useState([])
@@ -19,6 +17,7 @@ const OpenMessage = (props) => {
         if(props.match.params.username){
             socket.on('send', (user) => {
                 setUserInfo(user);
+                
             });
         }   
         return() => {
@@ -79,7 +78,7 @@ const OpenMessage = (props) => {
         <>
             <div className='chatHeader'>
                 <Link to='/messages'><i className='fa fa-angle-left' onClick={closeUserView2}></i></Link>
-                <Link to={userInfo._id && `/contacts/${userInfo._id}`}><img src={userLogo} /></Link>
+                <Link to={userInfo._id && `/contacts/${userInfo.username}`}><img src={userLogo} /></Link>
                 <div className='activeIndicator activeIndicatorTrue'></div>
                 <h4>{userInfo.username}</h4>
 

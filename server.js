@@ -41,29 +41,33 @@ io.sockets.on('connection', socket => {
         socket.join(room);
         console.log(socket.id + ' jioin' + room);
         console.log(room);
-        
     });
     socket.on('disconnectUser', room =>{
         console.log('leave')
         socket.leave(room);
     });
-    
+
     socket.on('sendMessage', ({message, username, sender, room}) => {
         console.log(message + ' ' + socket.id)
 
         User.findOne({username : sender})
         .then(user=>{
             if(user.messages.some(messageUser => messageUser.username === username)){
-                user.messages.map(messageUser => {
+                user.messages.forEach(messageUser => {
                     if(messageUser.username === username){
-                        messageUser.messages.push({message, sender})
+                        messageUser.messages.push({message, sender});
+                        messageUser.date = Date.now();
                     }
                 });
-                user.date = Date.now();
             }else{
-
-                user.messages.push({username, messages : [{sender , message}]})
+                user.messages.push({username, messages : [{sender , message}]});
+                user.messages.forEach(messageUser => {
+                    if(messageUser.username === username){
+                        messageUser.date = Date.now();
+                    }
+                });
             }
+            user.messages = user.messages.sort((a, b) => new Date(b.date) - new Date(a.date))
             user.save()
                 .then(currentUser => {   
                     User.findOne({username})
@@ -73,19 +77,27 @@ io.sockets.on('connection', socket => {
                             const length = currentUser.messages[index].messages.length - 1
                             const message_id = currentUser.messages[index].messages[length]._id;
                             if(user.messages.some(messageUser => messageUser.username === sender)){
-                                user.messages.map(messageUser => {
+                                user.messages.forEach(messageUser => {
                                     if(messageUser.username === sender){
                                         messageUser.messages.push({message, sender, _id : message_id});
+                                        messageUser.date = Date.now();
                                     }
                                 });
-                                user.date = Date.now();
                             }else{
                                 user.messages.push({_id, username : sender, messages : [{sender , message, _id : message_id}]});
+                                user.messages.forEach(messageUser => {
+                                    if(messageUser.username === username){
+                                        messageUser.date = Date.now();
+                                    }
+                                });
                             }
+                            user.messages = user.messages.sort((a, b) => new Date(b.date) - new Date(a.date));
                             user.save()
                                 .then(user => {
                                     socket.broadcast.to(room).emit('send', currentUser)
                                     socket.emit('send', user)
+                                    socket.broadcast.to(username).emit('updateUserData', user)
+                                    socket.emit('updateUserData', currentUser)
                                 });
                         });
                 });

@@ -17,17 +17,20 @@ import {socket} from '../socket';
 const Dashboard = () => {
 
     const {islogin} = useContext(IS_LOGIN);
-    const {user_dispatch} = useContext(USERDATA);
+    const {user, user_dispatch} = useContext(USERDATA);
     
     useEffect(()=>{
         socket.connect();
-        
         axios.get(`/dashboard/user/${islogin.id}`)
             .then(res => {
                 user_dispatch({type : 'USER', data : res.data});
-                console.log(res.data);
+                socket.emit('connectToUser', res.data.username);
                 axios.get('/authentication/online/' + islogin.id);
             });
+        socket.on('updateUserData', user =>{
+            user_dispatch({type : 'USER', data : user});
+
+        });
         return () => {
             socket.disconnect();
         }

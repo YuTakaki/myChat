@@ -14,11 +14,18 @@ const ContactProfile = (props) => {
 
     const [contactProfile, setContactProfile] = useState({});
     useEffect(() => {
-        axios.get(`/dashboard/user2/${props.match.params.username}`)
-            .then(res => {
-                setContactProfile(res.data);
-            })
+        
     }, []);
+
+    useEffect(()=>{
+        if(props.match.params.username && props.match.params.username !== contactProfile.username){
+            axios.get(`/dashboard/user2/${props.match.params.username}`)
+                .then(res => {
+                    setContactProfile(res.data);
+                })
+
+        }
+    })
 
     useEffect(() => {
         console.log(contactProfile);
@@ -41,7 +48,7 @@ const ContactProfile = (props) => {
         <div className='contactProfile'>
             <Link to='/contacts'><i className='fa fa-angle-left' onClick={closeUserView2}></i></Link>
             <img src={userLogo}/>
-            <h1>Yu Takaki</h1>
+            <h1>{contactProfile.firstName} {contactProfile.lastName}</h1>
             <div className='messageOption'>
                 <ul>
                     <Link to={`/messages/${contactProfile.username && contactProfile.username}`}><li className='fa fa-envelope'></li></Link>
@@ -60,20 +67,20 @@ const ContactProfile = (props) => {
                 <h2>info</h2>
                 <ul>
                     <li>
-                        <h4>Yu</h4>
+                        <h4>{contactProfile.firstName} {contactProfile.lastName}</h4>
+                        <p>Name</p>
+                    </li>
+                    <li>
+                        <h4>{contactProfile.username}</h4>
                         <p>Username</p>
                     </li>
                     <li>
-                        <h4>asdasdd</h4>
+                        <h4></h4>
                         <p>Bio</p>
                     </li>
                     <li>
-                        <h4>yu%adasd.com</h4>
+                        <h4>{contactProfile.email}</h4>
                         <p>Email</p>
-                    </li>
-                    <li>
-                        <h4>june02 2000</h4>
-                        <p>Birthday</p>
                     </li>
                 </ul>
             </div>

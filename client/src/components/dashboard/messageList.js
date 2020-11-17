@@ -22,7 +22,7 @@ const MessageList = (props) => {
                     <div className='activeIndicator activeIndicatorTrue'></div>
                     <div className='message'>
                         <h4>{messages.username}</h4>
-                        <p>{messages.messages[0].message}</p>
+                        <p>{messages.messages[messages.messages.length - 1].message}</p>
                     </div>
                     <div className='right'>
                         <p>june 18</p>
