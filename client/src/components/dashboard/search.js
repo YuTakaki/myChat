@@ -54,7 +54,7 @@ const Search = (props) => {
             </div>
             <div ref={searchContainer} className='searched'>
                 {searchResult.map(search => (
-                    <Link to={`/messages/${search._id}`}>
+                    <Link to={`/messages/${search.username}`}>
                         <div onClick={clickSearch} className='searchList'>
                             <img src={user}/>
                             <p>{search.username}</p>

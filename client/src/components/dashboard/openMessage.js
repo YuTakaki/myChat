@@ -6,8 +6,6 @@ import axios from 'axios';
 import { USERDATA } from '../context/userData';
 import {socket} from '../socket';
 
-
-
 const OpenMessage = (props) => {
     const {closeUserView2} = props;
     const {user} = useContext(USERDATA);
@@ -18,10 +16,9 @@ const OpenMessage = (props) => {
     const [messages, setMessages] = useState([])
     const [room, setRoom] = useState('');
     useEffect(() => {
-        if(props.match.params.id){
+        if(props.match.params.username){
             socket.on('send', (user) => {
                 setUserInfo(user);
-                console.log('hi');
             });
         }   
         return() => {
@@ -29,8 +26,9 @@ const OpenMessage = (props) => {
         }   
     }, [])
     useEffect(() => {
-        if(props.match.params.id !== userInfo._id && props.match.params.id){
-            axios.get(`/dashboard/user/${props.match.params.id}`)
+        if(props.match.params.username !== userInfo.username && props.match.params.username){
+            socket.emit('disconnectUser', room);
+            axios.get(`/dashboard/user2/${props.match.params.username}`)
                 .then(res => {
                     setUserInfo(res.data);
                     setMessages([]);
@@ -44,13 +42,14 @@ const OpenMessage = (props) => {
             const updatedMessage = userInfo.messages !== undefined && filterMessage.messages;
             setMessages(updatedMessage);
         }
-        if(room === ''){
-            const filterMessageRoom = userInfo.messages && userInfo.messages.filter(messageUser => messageUser.username === user.username)[0];
-            if(filterMessageRoom !== undefined){
-                const room = user.username && filterMessageRoom._id;
-                setRoom(room);
-            }  
-        }
+        const filterMessageRoom = userInfo.messages && userInfo.messages.filter(messageUser => messageUser.username === user.username)[0];
+        if(filterMessageRoom !== undefined){
+            const newRoom = user.username && filterMessageRoom._id;
+            if(room !== newRoom || room === ''){
+                setRoom(newRoom);
+            }
+            
+        }  
     }, [userInfo]);
 
     useEffect(() => {
@@ -64,6 +63,7 @@ const OpenMessage = (props) => {
         
     }, [room])
     const messageInput = useRef();
+    
     const sendMessage = (e) => {
         e.preventDefault()
         const send = {

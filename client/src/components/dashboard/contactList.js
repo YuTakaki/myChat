@@ -32,7 +32,7 @@ const ContactList = (props) => {
             </nav>
             <div className='activeContacts activeContactLists activeContactContainer'>
                 {user.contacts && user.contacts.map(contact => contact.online && (
-                    <Link to={`/contacts/${contact._id}`}>
+                    <Link to={`/contacts/${contact.username}`}>
                         <div className='contactActive' onClick={openUserView2}>
                             <img src={userLogo}/>
                             <div className='activeIndicator activeIndicatorTrue'></div>
@@ -46,7 +46,7 @@ const ContactList = (props) => {
             </div>
             <div className='allContacts allContactLists'>
                 {user.contacts && user.contacts.map(contact => (
-                    <Link to={`/contacts/${contact._id}`}>
+                    <Link to={`/contacts/${contact.username}`}>
                         <div className='contactActive' onClick={openUserView2}>
                             <img src={userLogo}/>
                             <div className='activeIndicator activeIndicatorTrue'></div>

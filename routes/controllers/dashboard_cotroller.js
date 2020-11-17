@@ -12,6 +12,14 @@ const getUserID = (req, res) => {
 const getUserInfo = (req, res) => {
     User.findOne({_id : req.params.id})
         .then((user) => {
+            
+            res.send(user);
+        })
+}
+
+const getUserInfo2 = (req, res) => {
+    User.findOne({username : req.params.username})
+        .then((user) => {
             res.send(user);
         })
 }
@@ -54,5 +62,6 @@ module.exports = {
     getUserInfo,
     addToContact,
     deleteToContact,
-    sendMessage
+    sendMessage,
+    getUserInfo2,
 }

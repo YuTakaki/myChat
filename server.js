@@ -41,11 +41,13 @@ io.sockets.on('connection', socket => {
         socket.join(room);
         console.log(socket.id + ' jioin' + room);
         console.log(room);
-        socket.on('disconnectUser', room =>{
-            console.log('leave')
-            socket.leave(room);
-        });
+        
     });
+    socket.on('disconnectUser', room =>{
+        console.log('leave')
+        socket.leave(room);
+    });
+    
     socket.on('sendMessage', ({message, username, sender, room}) => {
         console.log(message + ' ' + socket.id)
 

@@ -25,6 +25,7 @@ const Dashboard = () => {
         axios.get(`/dashboard/user/${islogin.id}`)
             .then(res => {
                 user_dispatch({type : 'USER', data : res.data});
+                console.log(res.data);
                 axios.get('/authentication/online/' + islogin.id);
             });
         return () => {
@@ -50,8 +51,8 @@ const Dashboard = () => {
             </div>
             <div className='userView2'>
                 <Router>
-                    <Route exact path='/messages/:id' component={OpenMessage} />
-                    <Route path='/contacts/:id' component={ContactProfile} />
+                    <Route exact path='/messages/:username' component={OpenMessage} />
+                    <Route path='/contacts/:username' component={ContactProfile} />
                     <Route path='/settings/personal-info' component={PersonalInfo} />
                 </Router> 
             </div>

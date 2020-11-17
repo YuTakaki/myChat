@@ -14,7 +14,7 @@ const ContactProfile = (props) => {
 
     const [contactProfile, setContactProfile] = useState({});
     useEffect(() => {
-        axios.get(`/dashboard/user/${props.match.params.id}`)
+        axios.get(`/dashboard/user2/${props.match.params.username}`)
             .then(res => {
                 setContactProfile(res.data);
             })
@@ -44,7 +44,7 @@ const ContactProfile = (props) => {
             <h1>Yu Takaki</h1>
             <div className='messageOption'>
                 <ul>
-                    <Link to='/messages/sa'><li className='fa fa-envelope'></li></Link>
+                    <Link to={`/messages/${contactProfile.username && contactProfile.username}`}><li className='fa fa-envelope'></li></Link>
                     {user.contacts && user.contacts.every(contact => contact.username !== contactProfile.username) ? 
                     (
                         <li onClick={addToContact} className='fa fa-user-plus'></li>
