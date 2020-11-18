@@ -18,10 +18,24 @@ const getUserInfo = (req, res) => {
         })
 }
 
+
 const getUserInfo2 = (req, res) => {
     User.findOne({username : req.params.username})
         .then((user) => {
             res.send(user);
+        })
+}
+
+const getUserMessages = (req, res) => {
+    const {loginUser} = req.body;
+    User.findOne({username : req.params.username})
+        .then(user => {
+            user.messages.forEach(messageUser => {
+                if(messageUser.username === loginUser){
+                    res.send(messageUser);
+                }
+
+            })
         })
 }
 
@@ -119,4 +133,5 @@ module.exports = {
     deleteToContact,
     getUserInfo2,
     editAccount,
+    getUserMessages
 }

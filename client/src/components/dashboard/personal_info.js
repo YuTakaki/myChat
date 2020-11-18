@@ -31,8 +31,11 @@ const PersonalInfo = (props) => {
     }
     const editProfile = (e) => {
         e.preventDefault();
+        console.log(userInfo);
         axios.post('/dashboard/editAccount', userInfo)
+        
         .then(res => {
+            console.log(res.data);
             if(res.data.hasOwnProperty('username_err')){
                 setInputErr(res.data);
             }else{
@@ -119,15 +122,16 @@ const PersonalInfo = (props) => {
                 <form onSubmit={editProfile}>
                     <p>password</p>
                     
-                    <div className='inputContainer'>
+                    <label className='inputContainer'>
                         <input type='password' onChange={(e) => setUserInfo({...userInfo, password : e.target.value})}
                         disabled={true} required={true} placeholder='password'/>
                         <i onClick={retryInput} className='fa fa-pencil'></i>
-                    </div>
+                    </label>
                     <p className='error'>{inputErr.password_err}</p>
-                    <input type='text' onChange={(e) => setUserInfo({...userInfo, retry_password : e.target.value})}
+                    <input type='password' onChange={(e) => setUserInfo({...userInfo, retry_password : e.target.value})}
                         disabled={true} required={true} placeholder='retry password' ref={retryPasswordInput}/>
                     <p className='error'>{inputErr.retry_password_err}</p>
+                    <input type='submit' style={{display : 'none'}}/>
                 </form>
             </div>
         </div>

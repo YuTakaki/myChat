@@ -13,6 +13,7 @@ const OpenMessage = (props) => {
     const [userInfo, setUserInfo] = useState({});
     const [messages, setMessages] = useState([])
     const [room, setRoom] = useState('');
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
         if(props.match.params.username){
             socket.on('send', (user) => {
@@ -53,6 +54,7 @@ const OpenMessage = (props) => {
 
     useEffect(() => {
         chat.current.scrollTop = chat.current.scrollHeight;
+        setLoading(false);
     }, [messages]);
 
     useEffect(() => {
@@ -93,6 +95,10 @@ const OpenMessage = (props) => {
                         <p>12:20am</p>
                     </div>
                 ))}
+                {loading === true && (
+                    <div className='loading'>
+                    </div>
+                )}
 
             </div>
             <div className='chat-input'>
