@@ -8,16 +8,21 @@ import {socket} from '../socket';
 
 const OpenMessage = (props) => {
     const {closeUserView2} = props;
-    const {user, user_dispatch} = useContext(USERDATA);
+    const {user} = useContext(USERDATA);
     const chat = useRef();
     const [userInfo, setUserInfo] = useState({});
     const [messages, setMessages] = useState([])
     const [room, setRoom] = useState('');
     const [loading, setLoading] = useState(true);
+    const [messageImage, setMessageImage] = useState({
+        previewImages : [],
+        images : []
+    });
     useEffect(() => {
         if(props.match.params.username){
             socket.on('send', (user) => {
                 setUserInfo(user);
+                console.log(user);
                 
             });
         }   
@@ -26,12 +31,23 @@ const OpenMessage = (props) => {
         }   
     }, [])
     useEffect(() => {
+    },[messageImage])
+    useEffect(() => {
+
         if(props.match.params.username !== userInfo.username && props.match.params.username){
+            setLoading(true);
+            
             socket.emit('disconnectUser', room);
+            
             axios.get(`/dashboard/user2/${props.match.params.username}`)
                 .then(res => {
                     setUserInfo(res.data);
                     setMessages([]);
+                    setMessageImage({
+                        previewImages : [],
+                        images : []
+                    });
+                    setLoading(false);
                                 
                 });
         };
@@ -53,8 +69,9 @@ const OpenMessage = (props) => {
     }, [userInfo]);
 
     useEffect(() => {
+        console.log(messages);
         chat.current.scrollTop = chat.current.scrollHeight;
-        setLoading(false);
+        
     }, [messages]);
 
     useEffect(() => {
@@ -67,15 +84,73 @@ const OpenMessage = (props) => {
     
     const sendMessage = (e) => {
         e.preventDefault()
-        const send = {
-            message : messageInput.current.value,
-            sender : user.username,
-            username : userInfo.username,
-        }
-        setMessages([...messages, send]);
-        socket.emit('sendMessage', {...send, room});
-        messageInput.current.value = '';
+        let send;
+
+        if(messageImage.images.length > 0){
+            const url = 'https://api.cloudinary.com/v1_1/yutakaki/image/upload';
+            const preset = 'hnvazonp';
+            
+            let sendingImages = [];
+            const uploadImages = [...messageImage.images];
+            setMessageImage({
+                previewImages : [],
+                images : []
+            });
+
+            uploadImages.forEach(img => {
+                const formData = new FormData();
+                formData.append('file', img);
+                formData.append('upload_preset', preset);
+                axios.post(url, formData)
+                    .then(res => {
+                        sendingImages.push({image : res.data.secure_url})
+                        if(sendingImages.length === messageImage.images.length){
+                            console.log(sendingImages);
+                            send = {
+                                message : messageInput.current.value,
+                                sender : user.username,
+                                username : userInfo.username,
+                                images : sendingImages
+                            }
+                            setMessages([...messages, send]);
+                            socket.emit('sendMessage', {...send, room});
+                            messageInput.current.value = '';
+                        }
+                    });
+
+            });
+
+       }else if(messageInput.current.value && messageImage.images.length === 0){
+            send = {
+                message : messageInput.current.value,
+                sender : user.username,
+                username : userInfo.username,
+                images : []
+            }
+            setMessages([...messages, send]);
+            socket.emit('sendMessage', {...send, room});
+            messageInput.current.value = '';
+       }
+        
+        
     };
+
+    const prepareImage = (e) => {
+        const previewImages = [...e.target.files].map(file => URL.createObjectURL(file));
+        setMessageImage({
+            images : [...e.target.files],
+            previewImages
+        })
+    }
+
+    const removeMessageImage = (i) => {
+        const updatedImg = messageImage.images.filter((img, index) => index !== i);
+        const updatedPreviewImg = messageImage.previewImages.filter((img, index) => index !== i);
+        setMessageImage({
+            images : updatedImg,
+            previewImages : updatedPreviewImg,
+        });
+    }
     return ( 
         <>
             <div className='chatHeader'>
@@ -86,26 +161,44 @@ const OpenMessage = (props) => {
 
             </div>
             <div className='chat' ref={chat}>
-                {messages && messages.map(message => (
+                {loading === true ? (
+                    <div className='loading'>
+                    </div>
+                ) : messages && messages.map(message => (
                     <div className={`chat-content ${message.sender === user.username ? 'userMessage' : ''}`}>
                         <img src={userLogo}/>
                         <div className='chat-message'>
                             <p>{message.message}</p>
+                            <div className='sentImage'>
+                            { message.images && message.images.length > 0 && message.images.map((img, i) => (
+                                    <img src={img.image}/>
+                            ))}
+                            </div>
                         </div>
                         <p>12:20am</p>
                     </div>
                 ))}
-                {loading === true && (
-                    <div className='loading'>
-                    </div>
-                )}
+                
 
             </div>
+            {messageImage.previewImages.length > 0 && (
+                <div className='previewImage'>
+                    {messageImage.previewImages.map((img, i) => (
+                        <div className='image'>
+                            <i onClick={() => removeMessageImage(i)} className='fa fa-close'></i>
+                            <img src={img}/>
+
+                        </div>
+                        
+                    ))}
+
+                </div>
+            )}
             <div className='chat-input'>
                 <form  onSubmit={sendMessage}>
                     <label htmlFor='file' className='fa fa-image'>
                     </label>
-                    <input id='file' type='file' />
+                    <input onChange={prepareImage} id='file' type='file' accept='image/*' multiple={true}/>
                     <textarea ref={messageInput} placeholder='message'/>
                     <button type='submit' className='fa fa-send' value=''/>
                 </form>

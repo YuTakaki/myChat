@@ -7,19 +7,19 @@ module.exports = socket => {
         socket.leave(room);
     });
 
-    socket.on('sendMessage', ({message, username, sender, room}) => {
+    socket.on('sendMessage', ({message, username, sender, room, images}) => {
 
         User.findOne({username : sender})
         .then(user=>{
             if(user.messages.some(messageUser => messageUser.username === username)){
                 user.messages.forEach(messageUser => {
                     if(messageUser.username === username){
-                        messageUser.messages.push({message, sender});
+                        messageUser.messages.push({message, sender, images});
                         messageUser.date = Date.now();
                     }
                 });
             }else{
-                user.messages.push({username, messages : [{sender , message}]});
+                user.messages.push({username, messages : [{sender , message, images}]});
                 user.messages.forEach(messageUser => {
                     if(messageUser.username === username){
                         messageUser.date = Date.now();
@@ -38,12 +38,12 @@ module.exports = socket => {
                             if(user.messages.some(messageUser => messageUser.username === sender)){
                                 user.messages.forEach(messageUser => {
                                     if(messageUser.username === sender){
-                                        messageUser.messages.push({message, sender, _id : message_id});
+                                        messageUser.messages.push({message, sender, _id : message_id, images});
                                         messageUser.date = Date.now();
                                     }
                                 });
                             }else{
-                                user.messages.push({_id, username : sender, messages : [{sender , message, _id : message_id}]});
+                                user.messages.push({_id, username : sender, messages : [{sender , message, _id : message_id, images}]});
                                 user.messages.forEach(messageUser => {
                                     if(messageUser.username === username){
                                         messageUser.date = Date.now();

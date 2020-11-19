@@ -13,7 +13,7 @@ const MessageList = (props) => {
         e.target.nextSibling.classList.toggle('messageOptionActive');
     }
 
-    const {openUserView2 }= props
+    const {openUserView2 }= props;
     return ( 
         <div className='messageContainer'>
             {user.messages && user.messages.map(messages => (
@@ -22,7 +22,8 @@ const MessageList = (props) => {
                     <div className='activeIndicator activeIndicatorTrue'></div>
                     <div className='message'>
                         <h4>{messages.username}</h4>
-                        <p>{messages.messages[messages.messages.length - 1].message}</p>
+                        <p>{messages.messages[messages.messages.length - 1 ].message ? messages.messages[messages.messages.length - 1].message
+                        : 'sent an image'}</p>
                     </div>
                     <div className='right'>
                         <p>june 18</p>
