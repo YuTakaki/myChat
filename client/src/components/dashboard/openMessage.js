@@ -1,5 +1,5 @@
 import React, {useRef, useEffect, useState, memo, useContext, useCallback} from 'react';
-import userLogo from '../../assets/yu.jpg';
+import userLogo from '../../assets/yu.png';
 import {Link} from 'react-router-dom';
 import ClosingOpening from '../closing_opening_hoc';
 import axios from 'axios';
@@ -9,6 +9,7 @@ import {socket} from '../socket';
 const OpenMessage = (props) => {
     const {closeUserView2} = props;
     const {user} = useContext(USERDATA);
+    const [uploadingMessages, setUploadinMessages] = useState(false)
     const chat = useRef();
     const [userInfo, setUserInfo] = useState({});
     const [messages, setMessages] = useState([])
@@ -18,12 +19,16 @@ const OpenMessage = (props) => {
         previewImages : [],
         images : []
     });
+
     useEffect(() => {
-        if(props.match.params.username){
+        if(props.match.params.id){
             socket.on('send', (user) => {
-                setUserInfo(user);
+                // setUserInfo(user);
                 console.log(user);
-                
+                const updatedMessage = user.messages.filter(messageUser => messageUser._id === props.match.params.id)[0];
+                setMessages(updatedMessage.messages);
+                console.log(updatedMessage);
+                // console.log('1');
             });
         }   
         return() => {
@@ -34,12 +39,13 @@ const OpenMessage = (props) => {
     },[messageImage])
     useEffect(() => {
 
-        if(props.match.params.username !== userInfo.username && props.match.params.username){
+        if(props.match.params.id !== userInfo._id && props.match.params.id){
             setLoading(true);
             
             socket.emit('disconnectUser', room);
+            setRoom(props.match.params.id);
             
-            axios.get(`/dashboard/user2/${props.match.params.username}`)
+            axios.get(`/dashboard/user/${props.match.params.id}`)
                 .then(res => {
                     setUserInfo(res.data);
                     setMessages([]);
@@ -53,50 +59,55 @@ const OpenMessage = (props) => {
         };
     });
     useEffect(() => {
-        const filterMessage = userInfo.messages !== undefined && userInfo.messages.filter(messageUser => messageUser.username === user.username)[0];
+        // const filterMessage = userInfo.messages !== undefined && userInfo.messages.filter(messageUser => messageUser.username === user.username)[0];
+        // if(filterMessage !== undefined){
+        //     const updatedMessage = userInfo.messages !== undefined && filterMessage.messages;
+        //     setMessages(updatedMessage);
+        // }
+        const filterMessage =user.messages && user.messages.filter(messageUser => messageUser.username === userInfo.username)[0];
         if(filterMessage !== undefined){
             const updatedMessage = userInfo.messages !== undefined && filterMessage.messages;
             setMessages(updatedMessage);
         }
-        const filterMessageRoom = userInfo.messages && userInfo.messages.filter(messageUser => messageUser.username === user.username)[0];
-        if(filterMessageRoom !== undefined){
-            const newRoom = user.username && filterMessageRoom._id;
-            if(room !== newRoom || room === ''){
-                setRoom(newRoom);
-            }
+        // const filterMessageRoom = userInfo.messages && userInfo.messages.filter(messageUser => messageUser.username === user.username)[0];
+        // if(filterMessageRoom !== undefined){
+        //     const newRoom = user.username && filterMessageRoom._id;
+        //     if(room !== newRoom || room === ''){
+        //         setRoom(newRoom);
+        //     }
             
-        }  
+        // }  
+        chat.current.scrollTop = chat.current.scrollHeight;
     }, [userInfo]);
 
     useEffect(() => {
-        console.log(messages);
         chat.current.scrollTop = chat.current.scrollHeight;
-        
+        console.log(messages);
     }, [messages]);
 
     useEffect(() => {
         if(room !== ''){
             socket.emit('connectToUser', room);
         }
-        
     }, [room])
     const messageInput = useRef();
+    
     
     const sendMessage = (e) => {
         e.preventDefault()
         let send;
+        const messageValue = messageInput.current.value;
 
         if(messageImage.images.length > 0){
+            setUploadinMessages(true);
             const url = 'https://api.cloudinary.com/v1_1/yutakaki/image/upload';
             const preset = 'hnvazonp';
-            
             let sendingImages = [];
             const uploadImages = [...messageImage.images];
             setMessageImage({
                 previewImages : [],
                 images : []
             });
-
             uploadImages.forEach(img => {
                 const formData = new FormData();
                 formData.append('file', img);
@@ -105,9 +116,8 @@ const OpenMessage = (props) => {
                     .then(res => {
                         sendingImages.push({image : res.data.secure_url})
                         if(sendingImages.length === messageImage.images.length){
-                            console.log(sendingImages);
                             send = {
-                                message : messageInput.current.value,
+                                message : messageValue,
                                 sender : user.username,
                                 username : userInfo.username,
                                 images : sendingImages
@@ -115,6 +125,7 @@ const OpenMessage = (props) => {
                             setMessages([...messages, send]);
                             socket.emit('sendMessage', {...send, room});
                             messageInput.current.value = '';
+                            setUploadinMessages(false);
                         }
                     });
 
@@ -122,7 +133,7 @@ const OpenMessage = (props) => {
 
        }else if(messageInput.current.value && messageImage.images.length === 0){
             send = {
-                message : messageInput.current.value,
+                message : messageValue,
                 sender : user.username,
                 username : userInfo.username,
                 images : []
@@ -181,6 +192,11 @@ const OpenMessage = (props) => {
                 
 
             </div>
+            {uploadingMessages && (
+                <div className='pleaseWaitUploadinImages'>
+                    <p>uplading messages please wait</p>
+                </div>
+            )}
             {messageImage.previewImages.length > 0 && (
                 <div className='previewImage'>
                     {messageImage.previewImages.map((img, i) => (

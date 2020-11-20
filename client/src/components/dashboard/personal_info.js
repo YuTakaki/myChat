@@ -22,6 +22,13 @@ const PersonalInfo = (props) => {
         password_err : '',
         retry_password_err : ''
     });
+
+    const [success_err, setSuccess_err] = useState({
+        msg : '',
+        style : {
+            color : 'green'
+        }
+    });
     const retryPasswordInput = useRef();
     const {closeUserView2} = props;
     const edit = (e) => {
@@ -32,12 +39,18 @@ const PersonalInfo = (props) => {
     const editProfile = (e) => {
         e.preventDefault();
         console.log(userInfo);
-        axios.post('/dashboard/editAccount', userInfo)
+        axios.post(`/dashboard/editAccount?userUsername=${user.username}&userEmail=${user.email}`, userInfo)
         
         .then(res => {
             console.log(res.data);
             if(res.data.hasOwnProperty('username_err')){
                 setInputErr(res.data);
+                setSuccess_err({
+                    msg : 'error occured',
+                    style : {
+                        color : 'red'
+                    }
+                });
             }else{
                 user_dispatch({type : 'USER', data : res.data});
                 setUserInfo({
@@ -54,6 +67,12 @@ const PersonalInfo = (props) => {
                     email_err : '',
                     password_err : '',
                     retry_password_err : ''
+                });
+                setSuccess_err({
+                    msg : 'update successful',
+                    style : {
+                        color : 'green'
+                    }
                 });
             };
         });
@@ -134,6 +153,7 @@ const PersonalInfo = (props) => {
                     <input type='submit' style={{display : 'none'}}/>
                 </form>
             </div>
+            <p style={success_err.style}> {success_err.msg}</p>
         </div>
      );
 }

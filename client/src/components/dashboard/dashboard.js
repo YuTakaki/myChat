@@ -13,6 +13,7 @@ import { IS_LOGIN } from '../context/isLogin';
 import axios from 'axios';
 import { USERDATA } from '../context/userData';
 import {socket} from '../socket';
+import ProfilePicture from './profilePicture';
 
 const Dashboard = () => {
 
@@ -24,7 +25,7 @@ const Dashboard = () => {
         axios.get(`/dashboard/user/${islogin.id}`)
             .then(res => {
                 user_dispatch({type : 'USER', data : res.data});
-                socket.emit('connectToUser', res.data.username);
+                socket.emit('connectToUser', res.data._id);
                 axios.get('/authentication/online/' + islogin.id);
             });
         socket.on('updateUserData', user =>{
@@ -54,9 +55,10 @@ const Dashboard = () => {
             </div>
             <div className='userView2'>
                 <Router>
-                    <Route exact path='/messages/:username' component={OpenMessage} />
+                    <Route exact path='/messages/:id' component={OpenMessage} />
                     <Route path='/contacts/:username' component={ContactProfile} />
                     <Route path='/settings/personal-info' component={PersonalInfo} />
+                    <Route path='/settings/profile-picture' component={ProfilePicture} />
                 </Router> 
             </div>
         </div>

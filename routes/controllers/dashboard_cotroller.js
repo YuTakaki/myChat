@@ -57,7 +57,8 @@ const addToContact = (req, res) => {
         })
 }
 const deleteToContact = (req, res) => {
-    const {username} = req.body
+    const {username} = req.body;
+    
     User.findOne({_id : req.params.id})
         .then(user => {
             user.contacts = user.contacts.filter(contact => contact.username !== username);
@@ -68,6 +69,7 @@ const deleteToContact = (req, res) => {
 
 const editAccount = (req, res) => {
     const {firstName, lastName, username, email, password, retry_password, bio} = req.body;
+    const {userUsername, userEmail} = req.query;
     let errors = {
         username_err : '',
         email_err : '',
@@ -79,7 +81,7 @@ const editAccount = (req, res) => {
             if(err) throw err;
             bcrypt.hash(password, salt, (err, hash) => {
                 if(err) throw err;
-                User.findOne({username})
+                User.findOne({username : userUsername})
                     .then(user => {
                         user.firstName = firstName;
                         user.lastName = lastName;
@@ -97,7 +99,7 @@ const editAccount = (req, res) => {
     const usernameEmptyCheck = () => {
         User.findOne({username})
             .then(user => {
-                if(user && user.username !== username){
+                if(user && user.username !== userUsername){
                     errors.username_err = 'Username already exist';
                 }else{
                     if(username.length < 6) errors.username_err = 'Username should be 6 characters long';
@@ -110,19 +112,34 @@ const editAccount = (req, res) => {
     const emailEmptyCheck = () => {
         User.findOne({email})
             .then(user => {
-                if(user && user.email !== email){
+                if(user && user.email !== userEmail){
                     errors.email_err = 'email already exist'
                 }
                 if(password.length < 8) errors.password_err = 'password should be atleast 8 long';
                 if(password !== retry_password) errors.retry_password_err = 'retry password does not match password';
                 if(Object.values(errors).every(val => val === '')){
                     encrypting();  
+                    console.log(errors);
                 }else{
+                    
                     res.send(errors);
                 }
             })
     }
     usernameEmptyCheck();
+}
+
+const updateImage = (req, res) => {
+    const {img} = req.body;
+    console.log(img);
+    User.findOne({_id : req.params.id})
+        .then(user => {
+            console.log(user);
+            user.profile = img;
+            user.save()
+                .then(user => res.send(user));
+        })
+
 }
 
 module.exports = {
@@ -133,5 +150,6 @@ module.exports = {
     deleteToContact,
     getUserInfo2,
     editAccount,
-    getUserMessages
+    getUserMessages,
+    updateImage
 }

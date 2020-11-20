@@ -12,6 +12,10 @@ const Settings = (props) => {
                     <i  className='fa fa-info-circle'></i>
                     <h3>Personal Information</h3>
                 </li></Link>
+                <Link to='/settings/profile-picture'><li onClick={openUserView2}> 
+                    <i  className='fa fa-camera'></i>
+                    <h3>Profile Picture</h3>
+                </li></Link>
             </ul>
         </div>
      );

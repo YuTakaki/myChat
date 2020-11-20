@@ -20,7 +20,7 @@ const Home = () => {
                     <ul>
                         <Link to='/home/sign-up'><li onClick={closeHomeNav}>Register</li></Link>
                         <Link to='/home/sign-in'><li onClick={closeHomeNav}>Log-in</li></Link>
-                        <Link to='/stranger'><li onClick={closeHomeNav}>Stranger</li></Link>
+                        {/* <Link to='/stranger'><li onClick={closeHomeNav}>Stranger</li></Link> */}
                     </ul>
                 </nav>
                 <i onClick={showHomeNav} className='fa fa-bars'></i>

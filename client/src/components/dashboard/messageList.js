@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import userLogo from '../../assets/yu.jpg';
+import userLogo from '../../assets/yu.png';
 import {Link} from 'react-router-dom';
 import ClosingOpening from '../closing_opening_hoc';
 import { USERDATA } from '../context/userData';
@@ -17,7 +17,7 @@ const MessageList = (props) => {
     return ( 
         <div className='messageContainer'>
             {user.messages && user.messages.map(messages => (
-                <Link to={`/messages/${messages.username}`}><div className='messageContent' onClick={openUserView2}>
+                <Link to={`/messages/${messages._id}`}><div className='messageContent' onClick={openUserView2}>
                     <img src={userLogo}/>
                     <div className='activeIndicator activeIndicatorTrue'></div>
                     <div className='message'>
@@ -33,10 +33,7 @@ const MessageList = (props) => {
                         </div>
                     </div>
                 </div></Link>
-
             ))}
-
-            
         </div>
 
      );

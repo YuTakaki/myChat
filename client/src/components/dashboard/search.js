@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef, useContext} from 'react';
-import user from '../../assets/yu.jpg';
+import user from '../../assets/yu.png';
 import axios from 'axios';
 import { IS_LOGIN } from '../context/isLogin';
 import {Link} from 'react-router-dom';
@@ -54,7 +54,7 @@ const Search = (props) => {
             </div>
             <div ref={searchContainer} className='searched'>
                 {searchResult.map(search => (
-                    <Link to={`/messages/${search.username}`}>
+                    <Link to={`/messages/${search._id}`}>
                         <div onClick={clickSearch} className='searchList'>
                             <img src={user}/>
                             <p>{search.username}</p>

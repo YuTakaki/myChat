@@ -80,13 +80,15 @@
                     // mi-width: 300px;
                     margin-top: 5px;
                     // height: 200px;
+                    max-width: max-content;
                     
                     img{
-                        max-height: 200px;
+                        max-height: 150px;
                         height: auto;
                         width: auto;
-                        max-width: 90%;
+                        max-width: 150px;
                         margin: 5px;
+                        object-fit: cover;
                        
                         border-radius: 0;
                         
@@ -102,6 +104,15 @@
                 border-radius: 50px;
                 margin-bottom: auto;
             }
+        }
+        .pleaseWaitUploadinImages{
+            height: 2em;
+            width: 100%;
+            border-top: 1px solid $tertiary;
+            justify-content: center;
+            display: flex;
+            align-items: center;
+
         }
         .previewImage{
             height: 150px;
@@ -222,13 +233,13 @@
         }
         .personalInfo{
             font-family: $primaryFont, sans-serif;
-            color: $quarternary;
+            color: $primary;
             display: flex;
             flex-direction: column;
             align-items: center;
             position: relative;
             a{
-                color: $quarternary;
+                color: $primary;
             }
             .fa-angle-left{
                 position: absolute;
@@ -284,6 +295,43 @@
             form{
                 width: 100%;
             }
+        }
+        .profilePic{
+            text-align: center;
+            
+            .profilePicContainer{
+                position: relative;
+                height: 150px;
+                width: 150px;
+                margin: auto;
+                margin-top: 100px;
+
+            }
+            input{
+                display: none;
+                
+                
+            }
+            img{
+                height: 100%;
+                width: 100%;
+                border-radius: 100px;
+            }
+            label{
+                position: absolute;
+                bottom: 0;
+                right: -5px;
+                font-size: 1.5em;
+                color: $primary;
+                cursor: pointer;
+            }
+            h3{
+                font-family: $primaryFont, sans-serif;
+                color: $primary;
+                margin-top: 5px;
+
+            }
+
         }
     }
     .userView2Open{

@@ -1,12 +1,14 @@
 import React, {useContext} from 'react';
-import user from '../../assets/yu.jpg';
+import userLogo from '../../assets/yu.png';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
 import { IS_LOGIN } from '../context/isLogin';
+import { USERDATA } from '../context/userData';
 
 
 const Header = () => {
     const {islogin, islogin_dispatch} = useContext(IS_LOGIN);
+    const {user} = useContext(USERDATA);
     const hideMenu = () => {
         document.querySelector('header').classList.remove('showHeader');
         document.querySelector('.userView1').classList.remove('viewHide');
@@ -22,7 +24,7 @@ const Header = () => {
     }
     return (
         <header>
-            <img src={user}/>
+            <img src={!user.profile ? userLogo : user.profile}/>
             <i className='fa fa-angle-left' onClick={hideMenu}></i>
             <nav className='userNav'>
                 <ul>

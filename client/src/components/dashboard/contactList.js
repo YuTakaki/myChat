@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import userLogo from '../../assets/yu.jpg';
+import userLogo from '../../assets/yu.png';
 import {Link} from 'react-router-dom';
 import ClosingOpening from '../closing_opening_hoc';
 import { USERDATA } from '../context/userData';
@@ -26,7 +26,7 @@ const ContactList = (props) => {
     const { openUserView2 } = props;
     return ( 
         <div className='contactListContainer'>
-            <nav>
+            {/* <nav>
                 <button onClick={navContactList} className='activeContacts activeContactBtn'>Active</button>
                 <button onClick={navContactList} className='allContacts'>All</button>
             </nav>
@@ -43,12 +43,12 @@ const ContactList = (props) => {
                 ))}
                 
 
-            </div>
-            <div className='allContacts allContactLists'>
+            </div> */}
+            <div className='allContacts allContactLists activeContactContainer'>
                 {user.contacts && user.contacts.map(contact => (
                     <Link to={`/contacts/${contact.username}`}>
                         <div className='contactActive' onClick={openUserView2}>
-                            <img src={userLogo}/>
+                            <img src={!user.profile ? userLogo : user.profile}/>
                             <div className='activeIndicator activeIndicatorTrue'></div>
                             <p>{contact.username}</p>
                         </div>
