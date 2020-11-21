@@ -21,13 +21,17 @@ const messageSchema = new schema({
     message : {
         type: String,
     },
-    sender : {
+    sender_id : {
         type: String,
         required: true
     },
     images : [imageSchema]
 });
 const messagesSchema = new schema({
+    user_id : {
+        type: String,
+        required: true
+    },
     username : {
         type: String,
         required: true

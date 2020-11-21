@@ -20,9 +20,17 @@ const getUserInfo = (req, res) => {
 
 
 const getUserInfo2 = (req, res) => {
-    User.findOne({username : req.params.username})
+    User.findOne({_id : req.params.id})
         .then((user) => {
-            res.send(user);
+            const {_id,username, profile, online} = user;
+            const send = {
+                _id,
+                username,
+                profile,
+                online
+            }
+            
+            res.send(send);
         })
 }
 

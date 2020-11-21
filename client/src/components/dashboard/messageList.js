@@ -17,7 +17,7 @@ const MessageList = (props) => {
     return ( 
         <div className='messageContainer'>
             {user.messages && user.messages.map(messages => (
-                <Link to={`/messages/${messages._id}`}><div className='messageContent' onClick={openUserView2}>
+                <Link to={`/messages/${messages.user_id}`}><div className='messageContent' onClick={openUserView2}>
                     <img src={userLogo}/>
                     <div className='activeIndicator activeIndicatorTrue'></div>
                     <div className='message'>

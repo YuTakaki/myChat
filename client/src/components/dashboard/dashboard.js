@@ -37,7 +37,7 @@ const Dashboard = () => {
         }
     },[]);
     window.addEventListener('beforeunload', () => {
-        axios.get('/autheication/offline/' + islogin.id);
+        axios.get('/authentication/offline/' + islogin.id);
     });
 
     return ( 
