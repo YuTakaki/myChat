@@ -8,7 +8,7 @@ import {socket} from '../socket';
 
 const OpenMessage = (props) => {
     const {closeUserView2} = props;
-    const {user} = useContext(USERDATA);
+    const {user, user_dispatch} = useContext(USERDATA);
     const [uploadingMessages, setUploadinMessages] = useState(false)
     const chat = useRef();
     const [userInfo, setUserInfo] = useState({});
@@ -40,6 +40,10 @@ const OpenMessage = (props) => {
             setLoading(true);
             
             socket.emit('disconnectUser', room);
+            axios.post(`/dashboard/message/seen/${user._id}`, {user_id : props.match.params.id})
+                .then(res => {
+                    user_dispatch({type : 'USER', data : res.data});
+                })
             
             axios.get(`/dashboard/user2/${props.match.params.id}`)
                 .then(res => {
@@ -55,31 +59,16 @@ const OpenMessage = (props) => {
         };
     });
     useEffect(() => {
-        // const filterMessage = userInfo.messages !== undefined && userInfo.messages.filter(messageUser => messageUser.username === user.username)[0];
-        // if(filterMessage !== undefined){
-        //     const updatedMessage = userInfo.messages !== undefined && filterMessage.messages;
-        //     setMessages(updatedMessage);
-        // }
-        // const filterMessageRoom = userInfo.messages && userInfo.messages.filter(messageUser => messageUser.username === user.username)[0];
-        // if(filterMessageRoom !== undefined){
-        //     const newRoom = user.username && filterMessageRoom._id;
-        //     if(room !== newRoom || room === ''){
-        //         setRoom(newRoom);
-        //     }
-            
-        // }
-        const filterMessage = user.messages.filter(msg => msg.user_id === userInfo._id);
+        const filterMessage = user.messages && user.messages.filter(msg => msg.user_id === userInfo._id);
         console.log(filterMessage);
-        if(filterMessage.length > 0){
-            setMessages(filterMessage[0].messages);
-            if(room !== filterMessage[0]._id || room === ''){
-                setRoom(filterMessage[0]._id)
+        if(filterMessage !== undefined){
+            if(filterMessage.length > 0){
+                setMessages(filterMessage[0].messages);
+                if(room !== filterMessage[0]._id || room === ''){
+                    setRoom(filterMessage[0]._id)
+                }
             }
         }
-        
-
-
-
         chat.current.scrollTop = chat.current.scrollHeight;
     }, [userInfo]);
 
@@ -175,7 +164,7 @@ const OpenMessage = (props) => {
         <>
             <div className='chatHeader'>
                 <Link to='/messages'><i className='fa fa-angle-left' onClick={closeUserView2}></i></Link>
-                <Link to={userInfo._id && `/contacts/${userInfo.username}`}><img src={userLogo} /></Link>
+                <Link to={userInfo._id && `/contacts/${userInfo._id}`}><img src={userLogo} /></Link>
                 <div className='activeIndicator activeIndicatorTrue'></div>
                 <h4>{userInfo.username}</h4>
 
@@ -186,7 +175,7 @@ const OpenMessage = (props) => {
                     </div>
                 ) : messages && messages.map(message => (
                     <div className={`chat-content ${message.sender_id === user._id ? 'userMessage' : ''}`}>
-                        <img src={userLogo}/>
+                        <img src={message.sender_id === user._id ? user.profile === '' ? userLogo : user.profile : userInfo.profile === ''? userLogo : userInfo.profile}/>
                         <div className='chat-message'>
                             <p>{message.message}</p>
                             <div className='sentImage'>

@@ -46,7 +46,7 @@ const ContactList = (props) => {
             </div> */}
             <div className='allContacts allContactLists activeContactContainer'>
                 {user.contacts && user.contacts.map(contact => (
-                    <Link to={`/contacts/${contact.username}`}>
+                    <Link to={`/contacts/${contact._id}`}>
                         <div className='contactActive' onClick={openUserView2}>
                             <img src={!user.profile ? userLogo : user.profile}/>
                             <div className='activeIndicator activeIndicatorTrue'></div>

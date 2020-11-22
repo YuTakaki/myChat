@@ -14,6 +14,7 @@ module.exports = socket => {
 
         User.findOne({_id : sender_id})
             .then(senderUser => {
+                console.log(1);
                 if(senderUser.messages.some(messageUser => messageUser.user_id === to)){
                     senderUser.messages.forEach(messageUser => {
                         if(messageUser.user_id === to){
@@ -24,13 +25,16 @@ module.exports = socket => {
                         }
                     });
                 }else{
-                    senderUser.messages.push({user_id : to, username, senderProfile, messages : [{sender_id, message, images}]});
+                    senderUser.messages.unshift({user_id : to, username, senderProfile,seen : true, messages : [{sender_id, message, images}]});
                 }
                 senderUser.messages = senderUser.messages.sort((a, b) => new Date(b.date) - new Date(a.date));
                 senderUser.save()
                     .then(updatedSenderUser => {
                         User.findOne({_id : to})
+                        
                             .then(toSendUser => {
+                                console.log(to)
+                                console.log(sender_id)
                                 const messageFilter = updatedSenderUser.messages.filter(msgUser => msgUser.user_id === to)[0];
                                 const message_id = messageFilter.messages[messageFilter.messages.length - 1]._id;
                                 const _id = updatedSenderUser.messages.filter(msgUser => msgUser.user_id === to)[0]._id
@@ -41,10 +45,11 @@ module.exports = socket => {
                                             messageUser.senderProfile = updatedSenderUser.profile;
                                             messageUser.messages.push({_id : message_id, message, sender_id, images});
                                             messageUser.date = Date.now();
+                                            messageUser.seen = false
                                         }
                                     });
                                 }else{
-                                    toSendUser.messages.push({_id, user_id : sender_id, username : updatedSenderUser.username, senderProfile : updatedSenderUser.profile, messages : [{sender_id, message, images}]});
+                                    toSendUser.messages.unshift({_id, user_id : sender_id, username : updatedSenderUser.username, senderProfile : updatedSenderUser.profile, messages : [{sender_id, message, images}]});
                                 }
                                 toSendUser.messages = toSendUser.messages.sort((a, b) => new Date(b.date) - new Date(a.date));
                                 toSendUser.save()
@@ -70,59 +75,6 @@ module.exports = socket => {
                                     })
                             })
                     });
-            })
-
-        // User.findOne({_d : sender})
-        // .then(user=>{
-        //     if(user.messages.some(messageUser => messageUser._id.toString() === room)){
-        //         user.messages.forEach(messageUser => {
-        //             if(messageUser._id.toString() === room){
-        //                 messageUser.messages.push({message, sender, images});
-        //                 messageUser.date = Date.now();
-        //             }
-        //         });
-        //     }else{
-        //         user.messages.push({_id: room, username, messages : [{sender , message, images}]});
-        //         user.messages.forEach(messageUser => {
-        //             if(messageUser._id.toString() === room){
-        //                 messageUser.date = Date.now();
-        //             }
-        //         });
-        //     }
-        //     user.messages = user.messages.sort((a, b) => new Date(b.date) - new Date(a.date))
-        //     user.save()
-        //         .then(currentUser => {   
-        //             User.findOne({username})
-        //                 .then(user=>{
-        //                     const index = currentUser.messages.findIndex(messageUser => messageUser.username === username);
-        //                     const _id = currentUser.messages[index]._id;
-        //                     const length = currentUser.messages[index].messages.length - 1
-        //                     const message_id = currentUser.messages[index].messages[length]._id;
-        //                     if(user.messages.some(messageUser => messageUser._id.toString() === _id.toString())){
-        //                         user.messages.forEach(messageUser => {
-        //                             if(messageUser._id.toString() === _id.toString()){
-        //                                 messageUser.messages.push({message, sender, _id : message_id, images});
-        //                                 messageUser.date = Date.now();
-        //                             }
-        //                         });
-        //                     }else{
-        //                         user.messages.push({_id, username : sender, messages : [{sender , message, _id : message_id, images}]});
-        //                         user.messages.forEach(messageUser => {
-        //                             if(messageUser.username === username){
-        //                                 messageUser.date = Date.now();
-        //                             }
-        //                         });
-        //                     }
-        //                     user.messages = user.messages.sort((a, b) => new Date(b.date) - new Date(a.date));
-        //                     user.save()
-        //                         .then(user => {
-        //                             socket.broadcast.to(room).emit('send', user)
-        //                             socket.emit('send', currentUser)
-        //                             socket.broadcast.to(room).emit('updateUserData', user)
-        //                             socket.emit('updateUserData', currentUser)
-        //                         });
-        //                 });
-        //         });
-        // });
+            });
     });
 }

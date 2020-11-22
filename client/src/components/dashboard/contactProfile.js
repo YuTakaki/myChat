@@ -18,8 +18,8 @@ const ContactProfile = (props) => {
     }, []);
 
     useEffect(()=>{
-        if(props.match.params.username && props.match.params.username !== contactProfile.username){
-            axios.get(`/dashboard/user2/${props.match.params.username}`)
+        if(props.match.params.id && props.match.params.id !== contactProfile._id){
+            axios.get(`/dashboard/user/${props.match.params.id}`)
                 .then(res => {
                     setContactProfile(res.data);
                 })

@@ -150,6 +150,23 @@ const updateImage = (req, res) => {
 
 }
 
+const seenMessage = (req, res) => {
+    const {user_id} = req.body;
+    User.findOne({_id : req.params.id})
+        .then(user => {
+            user.messages = user.messages.map(msg => {
+                if(msg.user_id === user_id){
+                    msg.seen = true
+                }
+                return msg;
+            });
+            user.save()
+                .then(user => res.send(user));
+
+        })
+
+}
+
 module.exports = {
     getUserID,
     advanceSearch,
@@ -159,5 +176,6 @@ module.exports = {
     getUserInfo2,
     editAccount,
     getUserMessages,
-    updateImage
+    updateImage,
+    seenMessage,
 }

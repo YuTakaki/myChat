@@ -56,7 +56,7 @@ const Dashboard = () => {
             <div className='userView2'>
                 <Router>
                     <Route exact path='/messages/:id' component={OpenMessage} />
-                    <Route path='/contacts/:username' component={ContactProfile} />
+                    <Route path='/contacts/:id' component={ContactProfile} />
                     <Route path='/settings/personal-info' component={PersonalInfo} />
                     <Route path='/settings/profile-picture' component={ProfilePicture} />
                 </Router> 

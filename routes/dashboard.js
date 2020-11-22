@@ -12,5 +12,6 @@ route.post('/deleteToContact/:id', dashboard.deleteToContact);
 route.post('/editAccount/', dashboard.editAccount);
 route.post('/messages/:username', dashboard.getUserMessages);
 route.post('/updateImage/:id', dashboard.updateImage);
+route.post('/message/seen/:id', dashboard.seenMessage);
 
 module.exports = route;

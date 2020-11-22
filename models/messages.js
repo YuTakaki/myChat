@@ -44,7 +44,11 @@ const messagesSchema = new schema({
         type : Date,
         default : Date.now()
     },
-    messages : [messageSchema]
+    messages : [messageSchema],
+    seen : {
+        type : Boolean,
+        default : false
+    }
 });
 
 module.exports = messagesSchema;

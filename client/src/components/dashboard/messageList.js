@@ -18,9 +18,9 @@ const MessageList = (props) => {
         <div className='messageContainer'>
             {user.messages && user.messages.map(messages => (
                 <Link to={`/messages/${messages.user_id}`}><div className='messageContent' onClick={openUserView2}>
-                    <img src={userLogo}/>
+                    <img src={messages.senderProfile === '' ? userLogo : messages.senderProfile}/>
                     <div className='activeIndicator activeIndicatorTrue'></div>
-                    <div className='message'>
+                    <div className={`message ${!messages.seen ? 'notSeen' : ''}`}>
                         <h4>{messages.username}</h4>
                         <p>{messages.messages[messages.messages.length - 1 ].message ? messages.messages[messages.messages.length - 1].message
                         : 'sent an image'}</p>
