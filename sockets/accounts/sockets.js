@@ -66,10 +66,11 @@ module.exports = socket => {
                                             profile : updatedSenderUser.profile,
                                             online : updatedSenderUser.online
                                         }
-                                        socket.broadcast.to(to).emit('updateUserData', updatedToSendUser)
-                                        socket.emit('updateUserData', updatedSenderUser)
-                                        socket.broadcast.to(room).emit('send', currentUser)
-                                        socket.emit('send', sendedUser)
+                                        socket.broadcast.to(to).emit('updateUserData', updatedToSendUser);
+                                        socket.broadcast.to(to).emit('sendedUser');
+                                        socket.emit('updateUserData', updatedSenderUser);
+                                        socket.broadcast.to(room).emit('send', currentUser);
+                                        socket.emit('send', sendedUser);
                                         
 
                                     })

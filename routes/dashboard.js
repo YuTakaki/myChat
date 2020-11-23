@@ -13,5 +13,6 @@ route.post('/editAccount/', dashboard.editAccount);
 route.post('/messages/:username', dashboard.getUserMessages);
 route.post('/updateImage/:id', dashboard.updateImage);
 route.post('/message/seen/:id', dashboard.seenMessage);
+route.post('/deleteMessage/:id', dashboard.deleteMessage);
 
 module.exports = route;

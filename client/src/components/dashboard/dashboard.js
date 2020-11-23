@@ -14,13 +14,17 @@ import axios from 'axios';
 import { USERDATA } from '../context/userData';
 import {socket} from '../socket';
 import ProfilePicture from './profilePicture';
+import notif from '../../assets/iPHONE TEXT NOTIFICATION SOUND EFFECT.mp3';
 
 const Dashboard = () => {
 
     const {islogin} = useContext(IS_LOGIN);
     const {user, user_dispatch} = useContext(USERDATA);
+    const audio = new Audio(notif);
+
     
     useEffect(()=>{
+        
         socket.connect();
         axios.get(`/dashboard/user/${islogin.id}`)
             .then(res => {
@@ -32,6 +36,10 @@ const Dashboard = () => {
             user_dispatch({type : 'USER', data : user});
 
         });
+        socket.on('sendedUser', () => {
+            audio.load();
+            audio.play();
+        })
         return () => {
             socket.disconnect();
         }

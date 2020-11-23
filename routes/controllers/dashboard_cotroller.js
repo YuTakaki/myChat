@@ -20,6 +20,7 @@ const getUserInfo = (req, res) => {
 
 
 const getUserInfo2 = (req, res) => {
+    console.log(req.params.id);
     User.findOne({_id : req.params.id})
         .then((user) => {
             const {_id,username, profile, online} = user;
@@ -32,6 +33,7 @@ const getUserInfo2 = (req, res) => {
             
             res.send(send);
         })
+        
 }
 
 const getUserMessages = (req, res) => {
@@ -152,6 +154,7 @@ const updateImage = (req, res) => {
 
 const seenMessage = (req, res) => {
     const {user_id} = req.body;
+    console.log(req.params.id);
     User.findOne({_id : req.params.id})
         .then(user => {
             user.messages = user.messages.map(msg => {
@@ -164,7 +167,18 @@ const seenMessage = (req, res) => {
                 .then(user => res.send(user));
 
         })
+        .catch(() => console.log('smething went wrong'))
 
+}
+
+const deleteMessage = (req, res) => {
+    const {id} = req.body;
+    User.findOne({_id : req.params.id})
+        .then(user => {
+            user.messages = user.messages.filter(msg => msg._id.toString() !== id)
+            user.save()
+                .then(user => res.send(user));
+        })
 }
 
 module.exports = {
@@ -178,4 +192,5 @@ module.exports = {
     getUserMessages,
     updateImage,
     seenMessage,
+    deleteMessage
 }

@@ -3,21 +3,53 @@ import userLogo from '../../assets/yu.png';
 import {Link} from 'react-router-dom';
 import ClosingOpening from '../closing_opening_hoc';
 import { USERDATA } from '../context/userData';
+import axios from 'axios';
 
 const MessageList = (props) => {
-    const {user} = useContext(USERDATA);
+    const {user, user_dispatch} = useContext(USERDATA);
     console.log(user);
-    const showMessageOption = (e) => {
+    const showMessageOption = (e, i) => {
         e.stopPropagation();
-        // document.querySelectorAll('.message-options').forEach(m => m.classList.remove('messageOptionActive'))
+        document.querySelectorAll('.message-options').forEach((m, index) => index !== i && m.classList.remove('messageOptionActive'))
         e.target.nextSibling.classList.toggle('messageOptionActive');
     }
 
     const {openUserView2 }= props;
+    const setDate = (date) => {
+        const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug',
+                        'Sept', 'Oct', 'Nov', 'Dec'];
+        const day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        date = new Date(date);
+        const currentDate = new Date(Date.now());
+        if(currentDate.getMonth() === date.getMonth() &&
+            currentDate.getDate() === date.getDate() &&
+            currentDate.getFullYear() === date.getFullYear()){
+                return `${date.getHours()} : ${date.getMinutes()}`
+
+        }else{
+            return `${month[date.getMonth()]} ${date.getDate()}`
+        }
+    }
+    const inboxMessage = (e, user_id) => {
+        e.stopPropagation();
+        openUserView2();
+        console.log(props);
+        props.history.push(`/messages/${user_id}`)
+    }
+
+    const deleteMessage = (e, id) => {
+        e.stopPropagation();
+        axios.post(`/dashboard/deleteMessage/${user._id}`, {id})
+            .then(res => {
+                console.log(res.data);
+                user_dispatch({type : 'USER', data : res.data});
+                document.querySelectorAll('.message-options').forEach(m => m.classList.remove('messageOptionActive'));
+            });
+    }
     return ( 
         <div className='messageContainer'>
-            {user.messages && user.messages.map(messages => (
-                <Link to={`/messages/${messages.user_id}`}><div className='messageContent' onClick={openUserView2}>
+            {user.messages && user.messages.map((messages, i) => (
+                <div className='messageContent' onClick={(e) => inboxMessage(e, messages.user_id)}>
                     <img src={messages.senderProfile === '' ? userLogo : messages.senderProfile}/>
                     <div className='activeIndicator activeIndicatorTrue'></div>
                     <div className={`message ${!messages.seen ? 'notSeen' : ''}`}>
@@ -26,13 +58,13 @@ const MessageList = (props) => {
                         : 'sent an image'}</p>
                     </div>
                     <div className='right'>
-                        <p>june 18</p>
-                        <i className='fa fa-ellipsis-h' onClick={showMessageOption}></i>
+                        <p>{setDate(messages.date)}</p>
+                        <i className='fa fa-ellipsis-h' onClick={(e) => showMessageOption(e, i)}></i>
                         <div className='message-options'>
-                            <button>Delete</button>
+                            <button onClick={(e) => deleteMessage(e, messages._id)}>Delete</button>
                         </div>
                     </div>
-                </div></Link>
+                </div>
             ))}
         </div>
 

@@ -108,7 +108,7 @@
             
             .messageContent{
                 display: flex;
-                z-index: 9;
+                
                 color: $tertiary;
                 padding: 10px;
                 height: 75px;
@@ -119,7 +119,7 @@
                     background-color: $primary;
                 }
                 .messageOptionActive{
-                    height: 70px !important;
+                    height: 50px !important;
                 }
                 .message-options{
                     overflow: hidden;
@@ -151,6 +151,7 @@
                     }
                 }
                 .message{
+                    z-index: 5;
                     width:50%;
                     h4, p{
                         

@@ -5,10 +5,12 @@ import ClosingOpening from '../closing_opening_hoc';
 import axios from 'axios';
 import { USERDATA } from '../context/userData';
 import {socket} from '../socket';
+import { IS_LOGIN } from '../context/isLogin';
 
 const OpenMessage = (props) => {
     const {closeUserView2} = props;
     const {user, user_dispatch} = useContext(USERDATA);
+    const {islogin} = useContext(IS_LOGIN);
     const [uploadingMessages, setUploadinMessages] = useState(false)
     const chat = useRef();
     const [userInfo, setUserInfo] = useState({});
@@ -40,22 +42,26 @@ const OpenMessage = (props) => {
             setLoading(true);
             
             socket.emit('disconnectUser', room);
-            axios.post(`/dashboard/message/seen/${user._id}`, {user_id : props.match.params.id})
+            
+            if(props.match.params.id !== undefined){
+                axios.post(`/dashboard/message/seen/${islogin.id}`, {user_id : props.match.params.id})
                 .then(res => {
                     user_dispatch({type : 'USER', data : res.data});
-                })
-            
-            axios.get(`/dashboard/user2/${props.match.params.id}`)
-                .then(res => {
-                    setUserInfo(res.data);
-                    setMessages([]);
-                    setMessageImage({
-                        previewImages : [],
-                        images : []
-                    });
-                    setLoading(false);
-                                
                 });
+                axios.get(`/dashboard/user2/${props.match.params.id}`)
+                    .then(res => {
+                        setUserInfo(res.data);
+                        setMessages([]);
+                        setMessageImage({
+                            previewImages : [],
+                            images : []
+                        });
+                        setLoading(false);
+                                    
+                    });
+
+            }
+            
         };
     });
     useEffect(() => {
@@ -69,7 +75,6 @@ const OpenMessage = (props) => {
                 }
             }
         }
-        chat.current.scrollTop = chat.current.scrollHeight;
     }, [userInfo]);
 
     useEffect(() => {
@@ -116,7 +121,8 @@ const OpenMessage = (props) => {
                                 to: userInfo._id,
                                 senderProfile : userInfo.profile,
                                 username : userInfo.username,
-                                images : sendingImages
+                                images : sendingImages,
+                                date : Date.now()
                             }
                             setMessages([...messages, send]);
                             socket.emit('sendMessage', {...send, room});
@@ -134,7 +140,8 @@ const OpenMessage = (props) => {
                 to: userInfo._id,
                 senderProfile : userInfo.profile,
                 username : userInfo.username,
-                images : []
+                images : [],
+                date : Date.now()
             }
             setMessages([...messages, send]);
             socket.emit('sendMessage', {...send, room});
@@ -160,6 +167,22 @@ const OpenMessage = (props) => {
             previewImages : updatedPreviewImg,
         });
     }
+
+    const setDate = (date) => {
+        const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug',
+                        'Sept', 'Oct', 'Nov', 'Dec'];
+        const day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        date = new Date(date);
+        const currentDate = new Date(Date.now());
+        if(currentDate.getMonth() === date.getMonth() &&
+            currentDate.getDate() === date.getDate() &&
+            currentDate.getFullYear() === date.getFullYear()){
+                return `${date.getHours()} : ${date.getMinutes()}`
+
+        }else{
+            return `${month[date.getMonth()]} ${date.getDate()}`
+        }
+    }
     return ( 
         <>
             <div className='chatHeader'>
@@ -184,7 +207,7 @@ const OpenMessage = (props) => {
                             ))}
                             </div>
                         </div>
-                        <p>12:20am</p>
+                        <p>{setDate(message.date)}</p>
                     </div>
                 ))}
                 
