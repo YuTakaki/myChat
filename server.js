@@ -6,7 +6,7 @@ const socket = require('socket.io');
 
 
 const app = express();
-const mongodb = 'mongodb://localhost/myChat';
+const mongodb = process.env.MONGODB_URI || 'mongodb://localhost/myChat';
 
 mongoose.connect(mongodb, {useNewUrlParser : true, useUnifiedTopology: true})
     .then(() => console.log('connected to database'))
@@ -29,6 +29,9 @@ app.use(passport.session());
 app.use('/authentication', require('./routes/authentication'));
 app.use('/dashboard', require('./routes/dashboard'));
 
+if(process.env.NODE_ENV === 'production'){
+    app.use(express.static('client/build'));
+}
 const server = app.listen(port, () => console.log(`you are listening to port ${port}`));
 
 const io = socket(server);
