@@ -26,8 +26,6 @@ const OpenMessage = (props) => {
         if(props.match.params.id){
             socket.on('send', (user) => {
                 setUserInfo(user);
-                console.log(user);
-                
             });
         }   
         return() => {
@@ -50,13 +48,19 @@ const OpenMessage = (props) => {
                 });
                 axios.get(`/dashboard/user2/${props.match.params.id}`)
                     .then(res => {
-                        setUserInfo(res.data);
-                        setMessages([]);
-                        setMessageImage({
-                            previewImages : [],
-                            images : []
-                        });
-                        setLoading(false);
+                        if(!res.data){
+                            props.history.push('/messages');
+                            
+                        }else{
+                            setUserInfo(res.data);
+                            setMessages([]);
+                            setMessageImage({
+                                previewImages : [],
+                                images : []
+                            });
+                            setLoading(false);
+                        }
+                        
                                     
                     });
 
@@ -147,8 +151,6 @@ const OpenMessage = (props) => {
             socket.emit('sendMessage', {...send, room});
             messageInput.current.value = '';
        }
-        
-        
     };
 
     const prepareImage = (e) => {
@@ -167,7 +169,7 @@ const OpenMessage = (props) => {
             previewImages : updatedPreviewImg,
         });
     }
-
+    
     const setDate = (date) => {
         const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug',
                         'Sept', 'Oct', 'Nov', 'Dec'];
@@ -177,7 +179,18 @@ const OpenMessage = (props) => {
         if(currentDate.getMonth() === date.getMonth() &&
             currentDate.getDate() === date.getDate() &&
             currentDate.getFullYear() === date.getFullYear()){
-                return `${date.getHours()} : ${date.getMinutes()}`
+                let hour = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
+                const am_pm = date.getHours() >= 12 ? 'pm' : 'am';
+                hour = hour <= 10 ? '0' + hour : hour;
+                const minute = date.getMinutes() <= 10 ? '0' + date.getMinutes() : date.getMinutes();
+                
+
+                return `${hour} : ${minute} ${am_pm}`
+
+        }else if(currentDate.getMonth() === date.getMonth() &&
+            currentDate.getFullYear() === date.getFullYear()&& 
+            currentDate.getDate() - date.getDate() <= 6){
+                return `${day[date.getDay()]}`
 
         }else{
             return `${month[date.getMonth()]} ${date.getDate()}`
@@ -186,7 +199,7 @@ const OpenMessage = (props) => {
     return ( 
         <>
             <div className='chatHeader'>
-                <Link to='/messages'><i className='fa fa-angle-left' onClick={closeUserView2}></i></Link>
+                <Link to='/messages' onClick={closeUserView2}><i className='fa fa-angle-left' ></i></Link>
                 <Link to={userInfo._id && `/contacts/${userInfo._id}`}><img src={userLogo} /></Link>
                 <div className='activeIndicator activeIndicatorTrue'></div>
                 <h4>{userInfo.username}</h4>

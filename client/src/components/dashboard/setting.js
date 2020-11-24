@@ -16,6 +16,10 @@ const Settings = (props) => {
                     <i  className='fa fa-camera'></i>
                     <h3>Profile Picture</h3>
                 </li></Link>
+                <Link to='/settings/delete-account'><li onClick={openUserView2}> 
+                    <i  className='fa fa-trash'></i>
+                    <h3>Delete Account</h3>
+                </li></Link>
             </ul>
         </div>
      );

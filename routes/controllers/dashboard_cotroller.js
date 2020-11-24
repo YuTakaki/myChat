@@ -33,6 +33,7 @@ const getUserInfo2 = (req, res) => {
             
             res.send(send);
         })
+        .catch(() => res.send(false));
         
 }
 
@@ -78,7 +79,7 @@ const deleteToContact = (req, res) => {
 }
 
 const editAccount = (req, res) => {
-    const {firstName, lastName, username, email, password, retry_password, bio} = req.body;
+    const {firstName, lastName, username, email, bio} = req.body;
     const {userUsername, userEmail} = req.query;
     let errors = {
         username_err : '',
@@ -86,26 +87,6 @@ const editAccount = (req, res) => {
         password_err : '',
         retry_password_err : ''
     };
-    const encrypting = () => {
-        bcrypt.genSalt(10, (err, salt)=>{
-            if(err) throw err;
-            bcrypt.hash(password, salt, (err, hash) => {
-                if(err) throw err;
-                User.findOne({username : userUsername})
-                    .then(user => {
-                        user.firstName = firstName;
-                        user.lastName = lastName;
-                        user.email = email;
-                        user.username = username;
-                        user.password = hash;
-                        user.bio = bio;
-                        user.save()
-                            .then(user => res.send(user));
-                    });
-            })
-        })
-    }
-
     const usernameEmptyCheck = () => {
         User.findOne({username})
             .then(user => {
@@ -125,10 +106,17 @@ const editAccount = (req, res) => {
                 if(user && user.email !== userEmail){
                     errors.email_err = 'email already exist'
                 }
-                if(password.length < 8) errors.password_err = 'password should be atleast 8 long';
-                if(password !== retry_password) errors.retry_password_err = 'retry password does not match password';
                 if(Object.values(errors).every(val => val === '')){
-                    encrypting();  
+                    User.findOne({username : userUsername})
+                        .then(user => {
+                            user.firstName = firstName;
+                            user.lastName = lastName;
+                            user.email = email;
+                            user.username = username;
+                            user.bio = bio;
+                            user.save()
+                                .then(user => res.send(user));
+                        });
                     console.log(errors);
                 }else{
                     
@@ -181,6 +169,27 @@ const deleteMessage = (req, res) => {
         })
 }
 
+const deleteAccount = (req, res) => {
+    const {password} = req.body;
+    User.findOne({_id : req.params.id})
+        .then(user => {
+            bcrypt.compare(password, user.password, (err, isMatch) =>{
+                console.log(isMatch);
+                if('ismatch' + isMatch){
+                    User.findOneAndRemove({_id : req.params.id})
+                        .then(user => {
+                            console.log(user);
+                            res.send(true)
+                        });
+                }else{
+                    res.send(false);
+                }
+            })
+
+        });
+    
+}
+
 module.exports = {
     getUserID,
     advanceSearch,
@@ -192,5 +201,6 @@ module.exports = {
     getUserMessages,
     updateImage,
     seenMessage,
-    deleteMessage
+    deleteMessage,
+    deleteAccount
 }

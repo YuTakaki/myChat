@@ -75,7 +75,7 @@ const ContactProfile = (props) => {
                         <p>Username</p>
                     </li>
                     <li>
-                        <h4></h4>
+                        <h4>{contactProfile.bio}</h4>
                         <p>Bio</p>
                     </li>
                     <li>

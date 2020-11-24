@@ -41,8 +41,12 @@ const Header = () => {
                         <i className='fa fa-gear'></i>
                         <p>Settings</p>
                     </li></Link>
+                    <li>
+                        <i className='fa fa-sign-out' onClick={logout}></i>
+                        <p>Log-out</p>
+                    </li>
                 </ul>
-                <button onClick={logout}>Log-out</button>
+                
             </nav>
         </header>
       );

@@ -24,7 +24,16 @@ const MessageList = (props) => {
         if(currentDate.getMonth() === date.getMonth() &&
             currentDate.getDate() === date.getDate() &&
             currentDate.getFullYear() === date.getFullYear()){
-                return `${date.getHours()} : ${date.getMinutes()}`
+                let hour = date.getHours() > 12 ? date.getHours() - 12 : date.getHours();
+                hour = hour <= 10 ? '0' + hour : hour;
+                const minute = date.getMinutes() <= 10 ? '0' + date.getMinutes() : date.getMinutes();
+                const am_pm = date.getHours() >= 12 ? 'pm' : 'am';
+                return `${hour} : ${minute} ${am_pm}`
+
+        }else if(currentDate.getMonth() === date.getMonth() &&
+            currentDate.getFullYear() === date.getFullYear()&& 
+            currentDate.getDate() - date.getDate() <= 6){
+                return `${day[date.getDay()]}`
 
         }else{
             return `${month[date.getMonth()]} ${date.getDate()}`

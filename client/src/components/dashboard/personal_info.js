@@ -12,15 +12,11 @@ const PersonalInfo = (props) => {
         lastName : user.lastName,
         username : user.username,
         email : user.email,
-        password : user.password,
-        retry_password : user.password,
         bio : user.bio
     });
     const [inputErr, setInputErr] = useState({
         username_err : '',
         email_err : '',
-        password_err : '',
-        retry_password_err : ''
     });
 
     const [success_err, setSuccess_err] = useState({
@@ -58,15 +54,11 @@ const PersonalInfo = (props) => {
                     lastName : user.lastName,
                     username : user.username,
                     email : user.email,
-                    password : user.password,
-                    retry_password : user.password,
                     bio : user.bio
                 });
                 setInputErr({
                     username_err : '',
                     email_err : '',
-                    password_err : '',
-                    retry_password_err : ''
                 });
                 setSuccess_err({
                     msg : 'update successful',
@@ -137,20 +129,6 @@ const PersonalInfo = (props) => {
                     </div>
                     <p className='error'>{inputErr.email_err}</p>
                     
-                </form>
-                <form onSubmit={editProfile}>
-                    <p>password</p>
-                    
-                    <label className='inputContainer'>
-                        <input type='password' onChange={(e) => setUserInfo({...userInfo, password : e.target.value})}
-                        disabled={true} required={true} placeholder='password'/>
-                        <i onClick={retryInput} className='fa fa-pencil'></i>
-                    </label>
-                    <p className='error'>{inputErr.password_err}</p>
-                    <input type='password' onChange={(e) => setUserInfo({...userInfo, retry_password : e.target.value})}
-                        disabled={true} required={true} placeholder='retry password' ref={retryPasswordInput}/>
-                    <p className='error'>{inputErr.retry_password_err}</p>
-                    <input type='submit' style={{display : 'none'}}/>
                 </form>
             </div>
             <p style={success_err.style}> {success_err.msg}</p>

@@ -3,8 +3,10 @@ import React, {useContext, useState} from 'react';
 import userLogo from '../../assets/yu.png';
 import { USERDATA } from '../context/userData';
 import axios from 'axios';
+import {Link} from 'react-router-dom';
+import ClosingOpening from '../closing_opening_hoc';
 
-const ProfilePicture = () => {
+const ProfilePicture = ({closeUserView2}) => {
     const {user, user_dispatch} = useContext(USERDATA);
     const [image, setImage] = useState({
         img : '',
@@ -45,6 +47,7 @@ const ProfilePicture = () => {
     }
     return ( 
         <div className='profilePic'>
+            <Link to='/settings'><i className='fa fa-angle-left' onClick={closeUserView2}></i></Link>
             <div className='profilePicContainer'>
                 <img src={image.previewImage && image.previewImage ? image.previewImage : !user.profile ? userLogo : user.profile}/>
                 <label htmlFor='profilePic' className='fa fa-camera'></label>
@@ -63,4 +66,4 @@ const ProfilePicture = () => {
      );
 }
  
-export default ProfilePicture;
+export default ClosingOpening(ProfilePicture);
