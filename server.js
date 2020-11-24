@@ -6,9 +6,9 @@ const socket = require('socket.io');
 
 
 const app = express();
-const mongodb = process.env.MONGODB_URI || 'mongodb://localhost/myChat';
+const mongodb = 'mongodb://localhost/myChat';
 
-mongoose.connect(mongodb, {useNewUrlParser : true, useUnifiedTopology: true})
+mongoose.connect(process.env.MONGODB_URI || mongodb, {useNewUrlParser : true, useUnifiedTopology: true})
     .then(() => console.log('connected to database'))
     .catch(err => console.log(err))
 
