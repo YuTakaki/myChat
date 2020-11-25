@@ -85,7 +85,7 @@ const SignUp = (props) => {
                     <label htmlFor='retry-password'>Retry Password</label>
                     <p>{registerErr.retry_password_err}</p>
                 </div>
-                <input type='submit' value='Log-in' />
+                <input type='submit' value='register' />
             </form>
 
             <div className='hasConfirmation'>
