@@ -16,6 +16,7 @@ import {socket} from '../socket';
 import ProfilePicture from './profilePicture';
 import notif from '../../assets/iPHONE TEXT NOTIFICATION SOUND EFFECT.mp3';
 import DeleteAccount from './deleteAccount';
+import changePassword from './changePassword';
 
 const Dashboard = () => {
 
@@ -69,6 +70,7 @@ const Dashboard = () => {
                     <Route path='/settings/personal-info' component={PersonalInfo} />
                     <Route path='/settings/profile-picture' component={ProfilePicture} />
                     <Route path='/settings/delete-account' component={DeleteAccount} />
+                    <Route path='/settings/change-password' component={changePassword} />
                 </Router> 
             </div>
         </div>

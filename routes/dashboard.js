@@ -15,5 +15,6 @@ route.post('/updateImage/:id', dashboard.updateImage);
 route.post('/message/seen/:id', dashboard.seenMessage);
 route.post('/deleteMessage/:id', dashboard.deleteMessage);
 route.delete('/delete-account/:id', dashboard.deleteAccount);
+route.put('/change-password/:id', dashboard.changePassword)
 
 module.exports = route;

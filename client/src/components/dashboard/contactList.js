@@ -55,6 +55,11 @@ const ContactList = (props) => {
                     </Link>
 
                 ))}
+                {user.contacts && user.contacts.length === 0 && (
+                <div>
+                    <h3>No Contact List yet</h3>
+                </div>
+            )}
                 
 
 

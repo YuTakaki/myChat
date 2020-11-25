@@ -20,6 +20,10 @@ const Settings = (props) => {
                     <i  className='fa fa-trash'></i>
                     <h3>Delete Account</h3>
                 </li></Link>
+                <Link to='/settings/change-password'><li onClick={openUserView2}> 
+                    <i  className='fa fa-lock'></i>
+                    <h3>Change password</h3>
+                </li></Link>
             </ul>
         </div>
      );

@@ -187,7 +187,31 @@ const deleteAccount = (req, res) => {
             })
 
         });
-    
+}
+
+const changePassword = (req, res) => {
+    const {currentPassword, newPassword} = req.body;
+    User.findOne({_id : req.params.id})
+        .then(user => {
+            bcrypt.compare(currentPassword, user.password, (err, isMatch) => {
+                if(isMatch){
+                    bcrypt.genSalt(10, (err, salt) => {
+                        if(err) throw err;
+                        bcrypt.hash(newPassword, salt, (err, hash) => {
+                            if(err) throw err;
+                            user.password = hash;
+                            user.save()
+                                .then(user => res.send(user));
+                        })
+                    })
+                }else{
+                    res.send(false);
+                }
+
+            });
+            
+            
+        })
 }
 
 module.exports = {
@@ -202,5 +226,6 @@ module.exports = {
     updateImage,
     seenMessage,
     deleteMessage,
-    deleteAccount
+    deleteAccount,
+    changePassword
 }

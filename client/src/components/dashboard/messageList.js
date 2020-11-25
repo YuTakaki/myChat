@@ -75,6 +75,11 @@ const MessageList = (props) => {
                     </div>
                 </div>
             ))}
+            {user.messages && user.messages.length === 0 && (
+                <div>
+                    <h3>No Messages</h3>
+                </div>
+            )}
         </div>
 
      );

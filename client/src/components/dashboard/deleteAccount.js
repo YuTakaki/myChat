@@ -19,7 +19,7 @@ const DeleteAccount = ({closeUserView2}) => {
             });
     }
     return ( 
-        <div>
+        <div className='delAccount'>
             <Link to='/settings'><i className='fa fa-angle-left' onClick={closeUserView2}></i></Link>
             <form onSubmit={deleteAccount}>
                 <p>Enter your password to confirm account deletion</p>
